@@ -3,12 +3,13 @@ function Grid(width, height)
 {
   this.width = width;
   this.height = height;
+  this.bombs = 0;
   
   this.cells = [];
   
   for (var x = 0; x < width; x++)
   {
-    this.cells.push([])
+    this.cells.push([]);
     for (var y = 0; y < width; y++)
     {
       this.cells[x].push(0);
@@ -19,7 +20,7 @@ function Grid(width, height)
 Grid.prototype.validCoordinate = function (x, y)
 {
   return x >= 0 && x < this.width && y >= 0 && y < this.height;
-}
+};
 
 Grid.prototype.addBomb = function (x, y)
 {
@@ -43,7 +44,7 @@ Grid.prototype.addBomb = function (x, y)
       }
     }
   }
-}
+};
 
 Grid.prototype.addBombs = function (nbBombs)
 {
@@ -60,4 +61,4 @@ Grid.prototype.addBombs = function (nbBombs)
     
     this.addBomb(x, y);
   }
-}
+};
