@@ -48,9 +48,9 @@ function initGameboard() {
     };
 
     $('#reset').click(function () {
-        generateLayout(20,20);
-        grid = new Grid(20, 20);
-        grid.addBombs(50);
+        generateLayout(largeur, hauteur);
+        grid = new Grid(largeur, hauteur);
+        grid.addBombs(bombs);
         $('#nbbombes').text(grid.flags + ' bombes');
 
 

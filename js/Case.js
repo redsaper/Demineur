@@ -12,3 +12,8 @@ function Case(value, x, y)
     this.shown = false;
 
 }
+
+Case.prototype.isBomb = function()
+{
+    return this.value === 'B';
+}
