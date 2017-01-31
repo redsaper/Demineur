@@ -6,11 +6,42 @@ document.addEventListener('contextmenu', event => event.preventDefault());
 
 $(document).ready(function () {
 
-    generateLayout(20, 20);
-    grid = new Grid(20, 20);
-    grid.addBombs(50);
+    $('button#validate').click(function () {
+        if ($('#largeur').val() != "" && $('hauteur').val() != "" && $('#bombs').val() != "") {
+            largeur = parseInt($('#largeur').val());
+            hauteur = parseInt($('#hauteur').val());
+            bombs = parseInt($('#bombs').val());
 
+            if (!isNaN(largeur) && !isNaN(hauteur) && !isNaN(bombs)){
+                if (testParameters(largeur,hauteur,bombs)) {
+                    initGameboard();
+                }
+            }
+        }
+    });
+
+});
+
+
+function testParameters(largeur, hauteur, bombs) {
+
+    if ( ((largeur * hauteur)/3)*2 >= bombs ){
+        if (largeur <= 40 && hauteur <= 50){
+            return true;
+        }
+    }
+    return false;
+}
+
+
+function initGameboard() {
+    generateLayout(largeur, hauteur);
+    grid = new Grid(largeur, hauteur);
+    grid.addBombs(bombs);
     $('#nbbombes').text(grid.bombs + ' bombes');
+
+    $('#menu').css('display', 'none');
+    $('#gameboard').css('display', 'block');
 
     document.oncontextmenu = function () {
         return false;
@@ -27,47 +58,12 @@ $(document).ready(function () {
             initEvents($(this));
         });
 
-        /*$('td').each(function () {
-
-            var x = parseInt($(this).attr("data-x"));
-            var y = parseInt($(this).attr("data-y"));
-
-            if (!grid.cells[x][y].shown) {
-                if (grid.cells[x][y].value == "B") {
-                    $(this).addClass("bomb");
-                } else if (grid.cells[x][y].value == 0) {
-                    $(this).addClass("empty");
-                } else {
-                    $(this).addClass("number");
-                    $(this).html(grid.cells[x][y].value)
-                }
-                grid.cells[x][y].shown = true;
-            }
-        });*/
-
     });
 
     $('td').each(function () {
-
-/*        var x = parseInt($(this).attr("data-x"));
-        var y = parseInt($(this).attr("data-y"));
-
-        if (!grid.cells[x][y].shown) {
-            if (grid.cells[x][y].value == "B") {
-                $(this).addClass("bomb");
-            } else if (grid.cells[x][y].value == 0) {
-                $(this).addClass("empty");
-            } else {
-                $(this).addClass("number");
-                $(this).html(grid.cells[x][y].value)
-            }
-            grid.cells[x][y].shown = true;
-        }*/
-
         initEvents($(this));
-
     });
-});
+}
 
 function generateLayout(width, height) {
     $('table tbody').html('');
@@ -105,7 +101,8 @@ function initEvents(elem){
                         elem.html(grid.cells[x][y].value)
                     }
                     grid.cells[x][y].shown = true;
-                    gameOver(grid.cells[x][y].value);
+                    gameOverLose(grid.cells[x][y].value);
+                    gameOverWin();
                 }
             }
 
@@ -136,10 +133,22 @@ function initEvents(elem){
 
 function gameOverLose(elem){
   if (elem == 'B') {
+    console.log('perdu');
     return true;
   }
 }
 
-function gameOverWin(elem){
-  
+function gameOverWin(){
+  var i = 0;
+  $('td').each(function () {
+    if(!$(this).hasClass('bomb') && !$(this).hasClass('empty') && !$(this).hasClass('number')){
+      i += 1;
+    };
+  });
+  console.log(i);
+  console.log(grid.bombs);
+  if (i + grid.bombs == grid.bombs) {
+    console.log('gagné');
+    return true;
+  }
 }
