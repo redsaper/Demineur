@@ -58,6 +58,16 @@ td {
     filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=NaN, Strength=5);
 }
 
+td:hover {
+    border: 1px solid white;
+    background-color: white;
+    -moz-box-shadow: 0px 0px 5px 0px #FFFFFF;
+    -webkit-box-shadow: 0px 0px 5px 0px #FFFFFF;
+    -o-box-shadow: 0px 0px 5px 0px #FFFFFF;
+    box-shadow: 0px 0px 5px 0px #FFFFFF;
+    filter:progid:DXImageTransform.Microsoft.Shadow(color=#FFFFFF, Direction=NaN, Strength=5);
+}
+
 td.empty {
     background-color: beige;
     border: 1px solid beige;
