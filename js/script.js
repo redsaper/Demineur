@@ -130,7 +130,7 @@ function initEvents(elem){
     elem.dblclick(function () {
         console.log("test");
     })
-    
+
 }
 
 
