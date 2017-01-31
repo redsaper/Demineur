@@ -139,7 +139,7 @@ Grid.prototype.getNbFlagsAround = function (x, y)
   }
   
   return nbFlagsAround;
-};
+}
 
 Grid.prototype.quickReveal = function (x, y)
 {
@@ -166,10 +166,17 @@ Grid.prototype.quickReveal = function (x, y)
       {
         continue;
       }
-
+      
+      this.cells[x2][y3].shown = true;
+      
+      if (this.cells[x2][y3].isBomb())
+      {
+        return false;
+      }
+      
       listCaseChanged = listCaseChanged.concat(this.reveal(x2, y2));
     }
   }
   
   return listCaseChanged;
-};
+}
