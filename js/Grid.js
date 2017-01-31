@@ -39,7 +39,7 @@ Grid.prototype.addBomb = function (x, y)
         continue;
       }
       
-      if (this.cells[x2][y2].value != 'B')
+      if (!this.cells[x2][y2].isBomb())
       {
         this.cells[x2][y2].value++;
       }
@@ -57,7 +57,7 @@ Grid.prototype.addBombs = function (nbBombs)
     var x = Math.floor((Math.random() * this.width));
     var y = Math.floor((Math.random() * this.height));
     
-    while (this.cells[x][y].value === 'B')
+    while (this.cells[x][y].isBomb())
     {
       x = Math.floor((Math.random() * this.width));
       y = Math.floor((Math.random() * this.height));
@@ -84,6 +84,13 @@ Grid.prototype.reveal = function (x,y)
   }
   
   this.cells[x][y].shown = true;
+  
+  if (this.cells[x][y].isBomb())
+  {
+    return false;
+  }
+  
+  
   var listCaseChanged = [this.cells[x][y]];
   
   if (this.cells[x][y].value === 0)
@@ -107,3 +114,62 @@ Grid.prototype.reveal = function (x,y)
   
   return listCaseChanged;
 };
+
+Grid.prototype.getNbFlagsAround = function (x, y)
+{
+  var nbFlagsAround = 0;
+  
+  for (var i = -1 ; i <= 1 ; i++)
+  {
+    for (var j = -1 ; j <= 1 ; j++)
+    {
+      var x2 = x + i;
+      var y2 = y + j;
+
+      if (!this.isValidCoordinate(x2, y2))
+      {
+        continue;
+      }
+
+      if (this.cells[x2][y2].flagged)
+      {
+        nbFlagsAround++;
+      }
+    }
+  }
+  
+  return nbFlagsAround;
+}
+
+Grid.prototype.quickReveal = function (x, y)
+{
+  if (this.cells[x][y].isBomb())
+  {
+    return false;
+  }
+  
+  if (this.getNbFlagsAround(x, y) != this.cells[x][y].value)
+  {
+      return [];
+  }
+  
+  var listCaseChanged = [];
+  
+  for (var i = -1 ; i <= 1 ; i++)
+  {
+    for (var j = -1 ; j <= 1 ; j++)
+    {
+      var x2 = x + i;
+      var y2 = y + j;
+
+      if (!this.isValidCoordinate(x2, y2))
+      {
+        continue;
+      }
+
+      listCaseChanged = listCaseChanged.concat(this.reveal(x2, y2));
+    }
+  }
+  
+  return listCaseChanged;
+}
