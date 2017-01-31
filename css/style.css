@@ -19,6 +19,12 @@
     text-align: center;
 }
 
+.container h2 {
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+}
+
 .case {
     border: 1px solid black;
     width: 20px;

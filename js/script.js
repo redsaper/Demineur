@@ -6,9 +6,13 @@ document.addEventListener('contextmenu', event => event.preventDefault());
 
 $(document).ready( function () {
 
+    var nbBombes = 50;
+
     generateLayout(20,20);
     grid = new Grid(20,20);
-    grid.addBombs(50);
+    grid.addBombs(nbBombes);
+
+    $('#nbbombes').text(nbBombes + ' bombes');
 
     document.oncontextmenu = function () {
         return false;
@@ -29,7 +33,7 @@ $(document).ready( function () {
             $(this).html(grid.cells[x][y])
         }
 */
-
+        
         $(this).mousedown(function (event) {
             var x = parseInt($(this).attr("data-x"));
             var y = parseInt($(this).attr("data-y"));
@@ -57,9 +61,13 @@ $(document).ready( function () {
                 if (!$(this).hasClass("empty") && !$(this).hasClass("number")){
                     if($(this).hasClass("flag")){
                         $(this).removeClass('flag');
+                        nbBombes += 1;
                     } else {
                         $(this).addClass('flag');
+                        nbBombes -= 1;
                     }
+                    $('#nbbombes').text(nbBombes + ' bombes');
+                    console.log('Nombre de bombes : ' + nbBombes);
                 }
             }
         });
