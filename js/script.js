@@ -6,7 +6,7 @@ document.addEventListener('contextmenu', event => event.preventDefault());
 
 $(document).ready( function () {
 
-    var nbBombes = 10;
+    var nbBombes = 50;
 
     generateLayout(20,20);
     grid = new Grid(20,20);
