@@ -162,14 +162,14 @@ Grid.prototype.quickReveal = function (x, y)
       var x2 = x + i;
       var y2 = y + j;
 
-      if (!this.isValidCoordinate(x2, y2))
+      if (!this.isValidCoordinate(x2, y2) || this.cells[x2][y2].flagged)
       {
         continue;
       }
       
-      this.cells[x2][y3].shown = true;
+      this.cells[x2][y2].shown = true;
       
-      if (this.cells[x2][y3].isBomb())
+      if (this.cells[x2][y2].isBomb())
       {
         return false;
       }
