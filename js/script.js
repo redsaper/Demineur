@@ -105,6 +105,7 @@ function initEvents(elem){
                         elem.html(grid.cells[x][y].value)
                     }
                     grid.cells[x][y].shown = true;
+                    gameOver(grid.cells[x][y].value);
                 }
             }
 
@@ -133,6 +134,12 @@ function initEvents(elem){
 
 }
 
+function gameOverLose(elem){
+  if (elem == 'B') {
+    return true;
+  }
+}
 
-
-
+function gameOverWin(elem){
+  
+}
