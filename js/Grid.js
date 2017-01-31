@@ -139,7 +139,7 @@ Grid.prototype.getNbFlagsAround = function (x, y)
   }
   
   return nbFlagsAround;
-};
+}
 
 Grid.prototype.quickReveal = function (x, y)
 {
@@ -147,14 +147,14 @@ Grid.prototype.quickReveal = function (x, y)
   {
     return false;
   }
-
+  
   if (this.getNbFlagsAround(x, y) != this.cells[x][y].value)
   {
       return [];
   }
-
+  
   var listCaseChanged = [];
-
+  
   for (var i = -1 ; i <= 1 ; i++)
   {
     for (var j = -1 ; j <= 1 ; j++)
@@ -167,16 +167,14 @@ Grid.prototype.quickReveal = function (x, y)
         continue;
       }
       
-      this.cells[x2][y2].shown = true;
-      
       if (this.cells[x2][y2].isBomb())
       {
         return false;
       }
-
+      
       listCaseChanged = listCaseChanged.concat(this.reveal(x2, y2));
     }
   }
-
+  
   return listCaseChanged;
-};
+}

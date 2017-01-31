@@ -144,7 +144,7 @@ function initEvents(elem){
         } else {
             if (grid.cells[x][y].shown) {
 
-                cases = grid.reveal(x,y);
+                cases = grid.quickReveal(x,y);
                 console.log(cases);
                 if (cases == false){
 
