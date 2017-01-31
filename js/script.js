@@ -14,9 +14,35 @@ $(document).ready( function () {
         return false;
     };
 
+    $('#reset').click(function(){
+      for (var x=0;x<20;x++){
+        for (var y=0;y<20;y++){
+          $('td[data-x="'+ x +'"][data-y="'+ y +'"]').removeClass();
+          $('td[data-x="'+ x +'"][data-y="'+ y +'"]').html("");
+        }
+      }
+      grid = new Grid(20,20);
+      grid.addBombs(50);
+
+      $('td').each(function () {
+          var x = parseInt($(this).attr("data-x"));
+          var y = parseInt($(this).attr("data-y"));
+
+
+          if (grid.cells[x][y] == "B"){
+              $(this).addClass("bomb");
+          } else if (grid.cells[x][y] == 0){
+              $(this).addClass("empty");
+          } else {
+              $(this).addClass("number");
+              $(this).html(grid.cells[x][y])
+          }
+      });
+    });
+
     $('td').each(function () {
 
-  /*      var x = parseInt($(this).attr("data-x"));
+        var x = parseInt($(this).attr("data-x"));
         var y = parseInt($(this).attr("data-y"));
 
 
@@ -28,9 +54,10 @@ $(document).ready( function () {
             $(this).addClass("number");
             $(this).html(grid.cells[x][y])
         }
-*/
+
 
         $(this).mousedown(function (event) {
+
             var x = parseInt($(this).attr("data-x"));
             var y = parseInt($(this).attr("data-y"));
 
