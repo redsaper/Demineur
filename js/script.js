@@ -16,7 +16,7 @@ $(document).ready( function () {
 
     $('td').each(function () {
 
-        var x = parseInt($(this).attr("data-x"));
+  /*      var x = parseInt($(this).attr("data-x"));
         var y = parseInt($(this).attr("data-y"));
 
 
@@ -28,7 +28,7 @@ $(document).ready( function () {
             $(this).addClass("number");
             $(this).html(grid.cells[x][y])
         }
-
+*/
 
         $(this).mousedown(function (event) {
             var x = parseInt($(this).attr("data-x"));
@@ -38,13 +38,18 @@ $(document).ready( function () {
                 console.log('clic du bouton gauche');
                 console.log(grid.cells[x][y]);
 
-                if (grid.cells[x][y] == "B"){
-                    $(this).addClass("bomb");
-                } else if (grid.cells[x][y] == 0){
-                    $(this).addClass("empty");
-                } else {
-                    $(this).addClass("number");
-                    $(this).html(grid.cells[x][y])
+                if($(this).hasClass("flag")){
+                  console.log('Erreur, il y a un drapeau');
+
+                }  else {
+                    if (grid.cells[x][y] == "B"){
+                      $(this).addClass("bomb");
+                    } else if (grid.cells[x][y] == 0){
+                      $(this).addClass("empty");
+                    } else {
+                      $(this).addClass("number");
+                      $(this).html(grid.cells[x][y])
+                    }
                 }
 
             } else if ( event.button == 2 ){
