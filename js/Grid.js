@@ -139,7 +139,7 @@ Grid.prototype.getNbFlagsAround = function (x, y)
   }
   
   return nbFlagsAround;
-}
+};
 
 Grid.prototype.quickReveal = function (x, y)
 {
@@ -177,4 +177,4 @@ Grid.prototype.quickReveal = function (x, y)
   }
   
   return listCaseChanged;
-}
+};
