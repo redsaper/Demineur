@@ -4,15 +4,16 @@ function Grid(width, height)
   this.width = width;
   this.height = height;
   this.bombs = 0;
+  this.flags = 0;
   
   this.cells = [];
   
   for (var x = 0; x < width; x++)
   {
-    this.cells.push([]);
+    this.cells[x] = [];
     for (var y = 0; y < width; y++)
     {
-      this.cells[x].push(0);
+      this.cells[x][y] = new Case(0,x,y);
     }
   }
 }
@@ -24,7 +25,7 @@ Grid.prototype.validCoordinate = function (x, y)
 
 Grid.prototype.addBomb = function (x, y)
 {
-  this.cells[x][y] = 'B';
+  this.cells[x][y].value = 'B';
   
   for (var i = -1 ; i <= 1 ; i++)
   {
@@ -38,9 +39,9 @@ Grid.prototype.addBomb = function (x, y)
         continue;
       }
       
-      if (this.cells[x2][y2] != 'B')
+      if (this.cells[x2][y2].value != 'B')
       {
-        this.cells[x2][y2]++;
+        this.cells[x2][y2].value++;
       }
     }
   }
@@ -48,12 +49,15 @@ Grid.prototype.addBomb = function (x, y)
 
 Grid.prototype.addBombs = function (nbBombs)
 {
+  this.bombs = nbBombs;
+  this.flags = nbBombs;
+
   for (var i = 0; i < nbBombs; i++)
   {
     var x = Math.floor((Math.random() * this.width));
     var y = Math.floor((Math.random() * this.height));
     
-    while (this.cells[x][y] === 'B')
+    while (this.cells[x][y].value === 'B')
     {
       x = Math.floor((Math.random() * this.width));
       y = Math.floor((Math.random() * this.height));
@@ -61,4 +65,13 @@ Grid.prototype.addBombs = function (nbBombs)
     
     this.addBomb(x, y);
   }
+};
+
+Grid.prototype.removeCases = function () {
+  for (var x = 0; x < width; x++) {
+    for (var y = 0; y < width; y++) {
+      this.cells[x][y] = null;
+    }
+  }
+
 };
