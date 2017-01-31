@@ -18,7 +18,7 @@ function Grid(width, height)
   }
 }
 
-Grid.prototype.validCoordinate = function (x, y)
+Grid.prototype.isValidCoordinate = function (x, y)
 {
   return x >= 0 && x < this.width && y >= 0 && y < this.height;
 };
@@ -34,7 +34,7 @@ Grid.prototype.addBomb = function (x, y)
       var x2 = x + i;
       var y2 = y + j;
       
-      if (!this.validCoordinate(x2, y2))
+      if (!this.isValidCoordinate(x2, y2))
       {
         continue;
       }
@@ -74,4 +74,36 @@ Grid.prototype.removeCases = function () {
     }
   }
 
+};
+
+Grid.prototype.reveal = function (x,y)
+{
+  if (this.cells[x][y].shown || this.cells[x][y].flagged)
+  {
+    return [];
+  }
+  
+  this.cells[x][y].shown = true;
+  var listCaseChanged = [this.cells[x][y]];
+  
+  if (this.cells[x][y].value === 0)
+  {
+    for (var i = -1 ; i <= 1 ; i++)
+    {
+      for (var j = -1 ; j <= 1 ; j++)
+      {
+        var x2 = x + i;
+        var y2 = y + j;
+
+        if (!this.isValidCoordinate(x2, y2))
+        {
+          continue;
+        }
+
+        listCaseChanged = listCaseChanged.concat(this.reveal(x2, y2));
+      }
+    }
+  }
+  
+  return listCaseChanged;
 };
