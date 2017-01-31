@@ -62,9 +62,11 @@ $(document).ready( function () {
                     if($(this).hasClass("flag")){
                         $(this).removeClass('flag');
                         nbBombes += 1;
-                    } else {
+                    } else if (nbBombes > 0) {
                         $(this).addClass('flag');
                         nbBombes -= 1;
+                    } else if (nbBombes == 0) {
+                        console.log('Nombre max de drapeau atteint !');
                     }
                     $('#nbbombes').text(nbBombes + ' bombes');
                     console.log('Nombre de bombes : ' + nbBombes);
