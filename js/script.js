@@ -6,13 +6,13 @@ document.addEventListener('contextmenu', event => event.preventDefault());
 
 $(document).ready( function () {
 
-    var nbBombes = 50;
+    var nbBombes = 10;
 
     generateLayout(20,20);
     grid = new Grid(20,20);
     grid.addBombs(nbBombes);
 
-    $('#nbbombes').text(nbBombes + ' bombes');
+    $('#nbbombes').text(nbBombes);
 
     document.oncontextmenu = function () {
         return false;
@@ -20,7 +20,7 @@ $(document).ready( function () {
 
     $('#reset').click(function(){
       nbBombes = 50;
-      $('#nbbombes').text(nbBombes + ' bombes');
+      $('#nbbombes').text(nbBombes);
       for (var x=0;x<20;x++){
         for (var y=0;y<20;y++){
           $('td[data-x="'+ x +'"][data-y="'+ y +'"]').removeClass();
@@ -31,10 +31,10 @@ $(document).ready( function () {
       grid.addBombs(50);
 
       $('td').each(function () {
-          var x = parseInt($(this).attr("data-x"));
+        var x = parseInt($(this).attr("data-x"));
           var y = parseInt($(this).attr("data-y"));
 
-
+/*  
           if (grid.cells[x][y] == "B"){
               $(this).addClass("bomb");
           } else if (grid.cells[x][y] == 0){
@@ -42,13 +42,13 @@ $(document).ready( function () {
           } else {
               $(this).addClass("number");
               $(this).html(grid.cells[x][y])
-          }
+          }*/
       });
     });
 
     $('td').each(function () {
 
-        var x = parseInt($(this).attr("data-x"));
+      /*  var x = parseInt($(this).attr("data-x"));
         var y = parseInt($(this).attr("data-y"));
 
 
@@ -59,7 +59,7 @@ $(document).ready( function () {
         } else {
             $(this).addClass("number");
             $(this).html(grid.cells[x][y])
-        }
+        }*/
 
 
         $(this).mousedown(function (event) {
@@ -97,7 +97,7 @@ $(document).ready( function () {
                     } else if (nbBombes == 0) {
                         console.log('Nombre max de drapeau atteint !');
                     }
-                    $('#nbbombes').text(nbBombes + ' bombes');
+                    $('#nbbombes').text(nbBombes);
                     console.log('Nombre de bombes : ' + nbBombes);
                 }
             }
