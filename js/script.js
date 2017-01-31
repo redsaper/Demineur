@@ -141,13 +141,15 @@ function gameOverLose(elem){
 function gameOverWin(){
   var i = 0;
   $('td').each(function () {
-    if(!$(this).hasClass('bomb') && !$(this).hasClass('empty') && !$(this).hasClass('number')){
+    if(!$(this).hasClass('empty') && !$(this).hasClass('number')){
       i += 1;
+    }else if($(this).hasClass('flag')){
+      i += 1;
+    }else if($(this).hasClass('bomb')){
+      return false;
     };
   });
-  console.log(i);
-  console.log(grid.bombs);
-  if (i + grid.bombs == grid.bombs) {
+  if (i == grid.bombs) {
     console.log('gagné');
     return true;
   }
