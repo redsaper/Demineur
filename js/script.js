@@ -6,15 +6,21 @@ document.addEventListener('contextmenu', event => event.preventDefault());
 
 $(document).ready( function () {
 
+    var nbBombes = 50;
+
     generateLayout(20,20);
     grid = new Grid(20,20);
-    grid.addBombs(50);
+    grid.addBombs(nbBombes);
+
+    $('#nbbombes').text(nbBombes + ' bombes');
 
     document.oncontextmenu = function () {
         return false;
     };
 
     $('#reset').click(function(){
+      nbBombes = 50;
+      $('#nbbombes').text(nbBombes + ' bombes');
       for (var x=0;x<20;x++){
         for (var y=0;y<20;y++){
           $('td[data-x="'+ x +'"][data-y="'+ y +'"]').removeClass();
@@ -84,9 +90,13 @@ $(document).ready( function () {
                 if (!$(this).hasClass("empty") && !$(this).hasClass("number")){
                     if($(this).hasClass("flag")){
                         $(this).removeClass('flag');
+                        nbBombes += 1;
                     } else {
                         $(this).addClass('flag');
+                        nbBombes -= 1;
                     }
+                    $('#nbbombes').text(nbBombes + ' bombes');
+                    console.log('Nombre de bombes : ' + nbBombes);
                 }
             }
         });
