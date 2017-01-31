@@ -85,8 +85,6 @@ function initEvents(elem){
         var y = parseInt(elem.attr("data-y"));
 
         if (event.button == 0) {
-            console.log('clic du bouton gauche');
-            console.log(grid.cells[x][y].value);
 
             if (grid.cells[x][y].flagged) {
                 console.log('Erreur, il y a un drapeau');
@@ -96,6 +94,15 @@ function initEvents(elem){
                         elem.addClass("bomb");
                     } else if (grid.cells[x][y].value == 0) {
                         elem.addClass("empty");
+                        cases = grid.reveal(x,y);
+                        cases.forEach(function (el) {
+                            if (el.value == 0) {
+                                $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('empty');
+                            } else {
+                                $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('number');
+                                $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').html(el.value);
+                            }
+                        })
                     } else {
                         elem.addClass("number");
                         elem.html(grid.cells[x][y].value)
@@ -114,6 +121,7 @@ function initEvents(elem){
                     elem.removeClass('flag');
                     grid.flags += 1;
                 } else if (grid.flags > 0) {
+                    grid.cells[x][y].flagged = true;
                     elem.addClass('flag');
                     grid.flags -= 1;
                 } else if (grid.flags == 0) {
@@ -127,6 +135,18 @@ function initEvents(elem){
 
     elem.dblclick(function () {
         console.log("test");
+
+        var x = parseInt(elem.attr("data-x"));
+        var y = parseInt(elem.attr("data-y"));
+
+        if (grid.cells[x][y].flagged) {
+            console.log('Erreur, il y a un drapeau');
+        } else {
+            if (grid.cells[x][y].shown) {
+
+            }
+        }
+
     })
 
 }
