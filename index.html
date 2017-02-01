@@ -20,6 +20,14 @@
 
         <div id="menu">
             <div class="row">
+                <div class="col-xs-12">
+                    <label for="niveau">Niveau : </label>
+                    <select name="niveau" id="niveau">
+                      <option>Facile
+                      <option>Moyen
+                      <option>Difficile
+                    </select>
+                </div>
                 <div class="col-xs-6">
                     <label for="largeur">Largeur : <input type="text" value="15" id="largeur" name="largeur"></label>
                 </div>
@@ -39,11 +47,14 @@
 
         <div id="gameboard" style="display: none;">
             <h2><img src="img/soldier.png" height="30px"> <span id="nbbombes"></span></h2>
-            <button class="reset">Reset</button>
             <table>
                 <tbody>
                 </tbody>
             </table>
+            <div class="button-footer">
+                <button class="menu-back">Retour au menu</button>
+                <button class="reset">Recommencer</button>
+            </div>
         </div>
     </div>
 </div>

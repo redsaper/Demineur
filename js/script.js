@@ -7,9 +7,31 @@ document.addEventListener('contextmenu', function (event) {
 });
 
 $(document).ready(function () {
+    $('select#niveau').change(function(){   // Selection du niveau
+      console.log($('select#niveau').val());
+      switch ($('select#niveau').val()) {
+        case "Facile":
+          $('#largeur').val(15);
+          $('#hauteur').val(15);
+          $('#bombs').val(25);
+          break;
+        case "Moyen":
+          $('#largeur').val(20);
+          $('#hauteur').val(20);
+          $('#bombs').val(50);
+          break;
+        case "Difficile":
+          $('#largeur').val(30);
+          $('#hauteur').val(30);
+          $('#bombs').val(130);
+          break;
+        default:
+
+      }
+    });
 
     $('button#validate').click(function () {
-        if ($('#largeur').val() != "" && $('hauteur').val() != "" && $('#bombs').val() != "") {
+        if ($('#largeur').val() != "" && $('#hauteur').val() != "" && $('#bombs').val() != "") {
             largeur = parseInt($('#largeur').val());
             hauteur = parseInt($('#hauteur').val());
             bombs = parseInt($('#bombs').val());
@@ -63,6 +85,21 @@ function initGameboard() {
             $('td').each(function () {
                 initEvents($(this));
             });
+
+        });
+    });
+
+    $('.menu-back').each(function () {
+        $(this).click(function () {
+            $('#modal-lost').modal('hide');
+            $('#modal-win').modal('hide');
+
+            $('#largeur').val(largeur);
+            $('#hauteur').val(hauteur);
+            $('#bombs').val(bombs);
+
+            $('#menu').css('display', 'block');
+            $('#gameboard').css('display', 'none');
 
         });
     });
@@ -170,13 +207,18 @@ function initEvents(elem) {
                     }
                 });
 
+
+                if (result.lost){
+                    // Perdu!
+
                 if (result.lost) {
                     gameOverLose()
                 }
             }
         }
 
-    })
+      }
+    });
 
 }
 
