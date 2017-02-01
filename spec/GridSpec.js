@@ -17,4 +17,14 @@ describe("Grid", function() {
     // expect(player).toBePlaying(song);
   });
 
+  it("Nombre bombes ok", function() {
+
+    expect(Grid).nbBombs;
+  });
+
+  it("Nombre drapeaux = nombre bombes", function() {
+
+    expect(Grid.flags == Grid.bombs);
+  });
+
 });
