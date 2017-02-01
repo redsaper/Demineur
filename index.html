@@ -47,7 +47,7 @@
 
         <div id="gameboard" style="display: none;">
             <h2><img src="img/soldier.png" height="30px"> <span id="nbbombes"></span></h2>
-            <button id="reset">Reset</button>
+            <button class="reset">Reset</button>
             <table>
                 <tbody>
                 </tbody>
@@ -66,6 +66,24 @@
             </div>
             <div class="modal-body">
                 <p>Notre jeu est dur, très très dur...&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default menu-back">Retour au menu</button>
+                <button type="button" class="btn btn-primary reset">Recommencer</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="modal-win" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Vous avez gagné!</h4>
+            </div>
+            <div class="modal-body">
+                <p>Vous avez du talent.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default menu-back">Retour au menu</button>
