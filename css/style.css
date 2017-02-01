@@ -175,7 +175,7 @@ td.number {
     border: none;
 }
 
-#modal-win button.menu-back {
+.button-footer button.menu-back, #modal-win button.menu-back {
     background-color: transparent;
     color: black;
     background-image: none;
@@ -188,7 +188,7 @@ td.number {
     filter:progid:DXImageTransform.Microsoft.Shadow(color=#000000, Direction=NaN, Strength=5);
 }
 
-#modal-win button.reset {
+.button-footer button.reset, #modal-win button.reset {
     background-color: transparent;
     color: #90ee90;
     background-image: none;
@@ -203,7 +203,7 @@ td.number {
 }
 
 
-#modal-win button.menu-back:hover {
+.button-footer button.menu-back:hover, #modal-win button.menu-back:hover {
     text-shadow: none;
     background-color: black;
     color: white;
@@ -217,8 +217,49 @@ td.number {
     filter:progid:DXImageTransform.Microsoft.Shadow(color=#FFFFFF, Direction=NaN, Strength=5);
 }
 
-#modal-win button.reset:hover {
+.button-footer button.reset:hover, #modal-win button.reset:hover {
     background-color: #90ee90;
+    color: white;
+    background-image: none;
+    border-radius: 1px;
+    border: 1px solid #ffffff;
+    -moz-box-shadow: 0px 0px 5px 0px #ffffff;
+    -webkit-box-shadow: 0px 0px 5px 0px #ffffff;
+    -o-box-shadow: 0px 0px 5px 0px #ffffff;
+    box-shadow: 0px 0px 5px 0px #ffffff;
+    filter:progid:DXImageTransform.Microsoft.Shadow(color=#ffffff, Direction=NaN, Strength=5);
+    font-weight: bold;
+}
+
+
+#gameboard .button-footer {
+    margin: 0 auto;
+    margin-top: 20px;
+    vertical-align: center;
+    text-align: center;
+}
+
+#gameboard .button-footer button {
+    margin: 5px;
+}
+
+button#validate {
+    background-color: transparent;
+    color: blue;
+    background-image: none;
+    border-radius: 1px;
+    border: 1px solid #0000ff;
+    -moz-box-shadow: 0px 0px 5px 0px #0000ff;
+    -webkit-box-shadow: 0px 0px 5px 0px #0000ff;
+    -o-box-shadow: 0px 0px 5px 0px #0000ff;
+    box-shadow: 0px 0px 5px 0px #0000ff;
+    filter:progid:DXImageTransform.Microsoft.Shadow(color=#0000ff, Direction=NaN, Strength=5);
+    font-weight: bold;
+}
+
+
+button#validate:hover {
+    background-color: #0000ff;
     color: white;
     background-image: none;
     border-radius: 1px;
