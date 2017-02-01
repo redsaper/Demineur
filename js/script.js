@@ -31,7 +31,7 @@ $(document).ready(function () {
     });
 
     $('button#validate').click(function () {
-        if ($('#largeur').val() != "" && $('hauteur').val() != "" && $('#bombs').val() != "") {
+        if ($('#largeur').val() != "" && $('#hauteur').val() != "" && $('#bombs').val() != "") {
             largeur = parseInt($('#largeur').val());
             hauteur = parseInt($('#hauteur').val());
             bombs = parseInt($('#bombs').val());
@@ -85,6 +85,21 @@ function initGameboard() {
             $('td').each(function () {
                 initEvents($(this));
             });
+
+        });
+    });
+
+    $('.menu-back').each(function () {
+        $(this).click(function () {
+            $('#modal-lost').modal('hide');
+            $('#modal-win').modal('hide');
+
+            $('#largeur').val(largeur);
+            $('#hauteur').val(hauteur);
+            $('#bombs').val(bombs);
+
+            $('#menu').css('display', 'block');
+            $('#gameboard').css('display', 'none');
 
         });
     });
