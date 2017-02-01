@@ -14,8 +14,8 @@ $(document).ready(function () {
             hauteur = parseInt($('#hauteur').val());
             bombs = parseInt($('#bombs').val());
 
-            if (!isNaN(largeur) && !isNaN(hauteur) && !isNaN(bombs)){
-                if (testParameters(largeur,hauteur,bombs)) {
+            if (!isNaN(largeur) && !isNaN(hauteur) && !isNaN(bombs)) {
+                if (testParameters(largeur, hauteur, bombs)) {
                     initGameboard();
                 }
             }
@@ -27,8 +27,8 @@ $(document).ready(function () {
 
 function testParameters(largeur, hauteur, bombs) {
 
-    if ( ((largeur * hauteur)/3)*2 >= bombs ){
-        if (largeur <= 40 && hauteur <= 50){
+    if (((largeur * hauteur) / 3) * 2 >= bombs) {
+        if (largeur <= 40 && hauteur <= 50) {
             return true;
         }
     }
@@ -84,7 +84,7 @@ function generateLayout(width, height) {
 }
 
 
-function initEvents(elem){
+function initEvents(elem) {
 
     elem.mousedown(function (event) {
 
@@ -99,9 +99,10 @@ function initEvents(elem){
                 if (!grid.cells[x][y].isShown()) {
                     if (grid.cells[x][y].isBomb()) {
                         elem.addClass("bomb");
+                        gameOverLose();
                     } else if (grid.cells[x][y].value == 0) {
                         elem.addClass("empty");
-                        cases = grid.reveal(x,y);
+                        cases = grid.reveal(x, y);
                         cases.forEach(function (el) {
                             if (el.value == 0) {
                                 $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('empty');
@@ -115,7 +116,6 @@ function initEvents(elem){
                         elem.html(grid.cells[x][y].getValue())
                     }
                     grid.cells[x][y].shown = true;
-                    gameOverLose(grid.cells[x][y].getValue());
                     gameOverWin();
                 }
             }
@@ -149,9 +149,8 @@ function initEvents(elem){
         if (grid.cells[x][y].flagged) {
             console.log('Erreur, il y a un drapeau');
         } else {
-            if (grid.cells[x][y].isShown())
-            {
-                result = grid.quickReveal(x,y);
+            if (grid.cells[x][y].isShown()) {
+                result = grid.quickReveal(x, y);
                 console.log(result.cases);
 
                 result.cases.forEach(function (el) {
@@ -171,8 +170,8 @@ function initEvents(elem){
                     }
                 });
 
-                if (result.lost){
-                    // Perdu!
+                if (result.lost) {
+                    gameOverLose()
                 }
             }
         }
@@ -182,10 +181,8 @@ function initEvents(elem){
 }
 
 function gameOverLose(elem) {
-    if (elem == 'B') {
-        $('#modal-lost').modal('show');
-        return true;
-    }
+    $('#modal-lost').modal('show');
+    return true;
 }
 
 function gameOverWin() {
