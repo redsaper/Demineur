@@ -80,11 +80,12 @@ Grid.prototype.reveal = function (x,y)
 {
   if (this.cells[x][y].shown || this.cells[x][y].flagged)
   {
-    return [];
+    return {cases: [], lost: false};
   }
   
   this.cells[x][y].shown = true;
   
+  var lost = this.cells[x][y].isBomb();
   var listCaseChanged = [this.cells[x][y]];
   
   if (this.cells[x][y].value === 0)
@@ -101,12 +102,12 @@ Grid.prototype.reveal = function (x,y)
           continue;
         }
 
-        listCaseChanged = listCaseChanged.concat(this.reveal(x2, y2));
+        listCaseChanged = listCaseChanged.concat(this.reveal(x2, y2).cases);
       }
     }
   }
   
-  return listCaseChanged;
+  return {cases: listCaseChanged, lost: lost};
 };
 
 Grid.prototype.getNbFlagsAround = function (x, y)
@@ -191,6 +192,7 @@ Grid.prototype.quickReveal = function (x, y)
       
       if (this.cells[x2][y2].flagged && !this.cells[x2][y2].isBomb())
       {
+        this.cells[x2][y2].shown = true;
         listCaseChanged.push(this.cells[x2][y2]);
         continue;
       }
@@ -200,7 +202,7 @@ Grid.prototype.quickReveal = function (x, y)
         lost = true;
       }
       
-      listCaseChanged = listCaseChanged.concat(this.reveal(x2, y2));
+      listCaseChanged = listCaseChanged.concat(this.reveal(x2, y2).cases);
     }
   }
   
@@ -227,6 +229,32 @@ Grid.prototype.moveOutBomb = function (x, y)
   this.addBombs(1);
   
   this.cells[x][y] = this.getNbBombsAround(x, y);
+}
+
+Grid.prototype.toggleFlag = function (x, y)
+{
+  var cell = this.cells[x][y];
+  
+  if (cell.isShown()) 
+  {
+    return;
+  }
+  
+  if (cell.isFlagged())
+  {
+    cell.setFlagged(false);
+    grid.flags++;
+  }
+  else
+  {
+    if (this.flags === 0) {
+      console.log('Nombre max de drapeau atteint !');
+      return;
+    }
+    
+    cell.setFlagged(true);
+    grid.flags--;
+  }
 }
 
 
