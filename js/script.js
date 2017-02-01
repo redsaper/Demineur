@@ -7,6 +7,8 @@ document.addEventListener('contextmenu', function (event) {
 });
 
 $(document).ready(function () {
+    stopGame = false;
+
     $('select#niveau').change(function(){   // Selection du niveau
       console.log($('select#niveau').val());
       switch ($('select#niveau').val()) {
@@ -59,6 +61,7 @@ function testParameters(largeur, hauteur, bombs) {
 
 
 function initGameboard() {
+    stopGame = false;
     generateLayout(largeur, hauteur);
     grid = new Grid(largeur, hauteur);
     grid.addBombs(bombs);
@@ -129,23 +132,25 @@ function initEvents(elem) {
         var y = parseInt(elem.attr("data-y"));
 
         if (event.button == 0) {
-            
+            if (!grid.timer) {
+              timer();
+            }
+
             var result = grid.reveal(x, y);
-            
+
             result.cases.forEach(updateView);
-            
+
             if (result.lost) {
                 gameOverLose();
             }
             else {
                 gameOverWin();
             }
-
         } else if (event.button == 2) {
             console.log('clic du bouton droit');
-            
+
             grid.toggleFlag(x, y);
-            
+
             updateView(grid.cells[x][y]);
             $('#nbbombes').text(grid.flags + ' bombes');
         }
@@ -215,7 +220,8 @@ function updateView(cell)
 
 function gameOverLose(elem) {
     $('#modal-lost').modal('show');
-    return true;
+    stopGame = true;
+    return stopGame;
 }
 
 function gameOverWin() {
@@ -230,8 +236,22 @@ function gameOverWin() {
         }
     });
     if (i == grid.bombs) {
-        console.log(i);
         $('#modal-win').modal('show');
-        return true;
+        stopGame = true;
+        return stopGame;
     }
+}
+
+function timer(){
+  if (!grid.timer) {
+    grid.timer = true;
+  }
+  grid.second++;
+  $('#timer').text(grid.second);
+
+  compte=setTimeout(function() {
+    if (!stopGame) {
+      timer();
+    }
+  },1000)
 }

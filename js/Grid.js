@@ -5,9 +5,12 @@ function Grid(width, height)
   this.height = height;
   this.bombs = 0;
   this.flags = 0;
-  
+
   this.cells = [];
-  
+
+  this.timer = false;
+  this.second = 0;
+
   for (var x = 0; x < width; x++)
   {
     this.cells[x] = [];
@@ -26,19 +29,19 @@ Grid.prototype.isValidCoordinate = function (x, y)
 Grid.prototype.addBomb = function (x, y)
 {
   this.cells[x][y].value = 'B';
-  
+
   for (var i = -1 ; i <= 1 ; i++)
   {
     for (var j = -1 ; j <= 1 ; j++)
     {
       var x2 = x + i;
       var y2 = y + j;
-      
+
       if (!this.isValidCoordinate(x2, y2))
       {
         continue;
       }
-      
+
       if (!this.cells[x2][y2].isBomb())
       {
         this.cells[x2][y2].value++;
@@ -56,13 +59,13 @@ Grid.prototype.addBombs = function (nbBombs)
   {
     var x = Math.floor((Math.random() * this.width));
     var y = Math.floor((Math.random() * this.height));
-    
+
     while (this.cells[x][y].isBomb())
     {
       x = Math.floor((Math.random() * this.width));
       y = Math.floor((Math.random() * this.height));
     }
-    
+
     this.addBomb(x, y);
   }
 };
@@ -82,12 +85,12 @@ Grid.prototype.reveal = function (x,y)
   {
     return {cases: [], lost: false};
   }
-  
+
   this.cells[x][y].shown = true;
-  
+
   var lost = this.cells[x][y].isBomb();
   var listCaseChanged = [this.cells[x][y]];
-  
+
   if (this.cells[x][y].value === 0)
   {
     for (var i = -1 ; i <= 1 ; i++)
@@ -106,14 +109,14 @@ Grid.prototype.reveal = function (x,y)
       }
     }
   }
-  
+
   return {cases: listCaseChanged, lost: lost};
 };
 
 Grid.prototype.getNbFlagsAround = function (x, y)
 {
   var nbFlagsAround = 0;
-  
+
   for (var i = -1 ; i <= 1 ; i++)
   {
     for (var j = -1 ; j <= 1 ; j++)
@@ -132,14 +135,14 @@ Grid.prototype.getNbFlagsAround = function (x, y)
       }
     }
   }
-  
+
   return nbFlagsAround;
 };
 
 Grid.prototype.getNbBombsAround = function (x, y)
 {
   var nbBombsAround = 0;
-  
+
   for (var i = -1 ; i <= 1 ; i++)
   {
     for (var j = -1 ; j <= 1 ; j++)
@@ -158,7 +161,7 @@ Grid.prototype.getNbBombsAround = function (x, y)
       }
     }
   }
-  
+
   return nbBombsAround;
 };
 
@@ -168,15 +171,15 @@ Grid.prototype.quickReveal = function (x, y)
   {
     return {cases: [], lost: true};
   }
-  
+
   if (this.getNbFlagsAround(x, y) != this.cells[x][y].value)
   {
       return {cases: [], lost: false};
   }
-  
+
   var lost = false;
   var listCaseChanged = [];
-  
+
   for (var i = -1 ; i <= 1 ; i++)
   {
     for (var j = -1 ; j <= 1 ; j++)
@@ -189,37 +192,37 @@ Grid.prototype.quickReveal = function (x, y)
       {
         continue;
       }
-      
+
       if (this.cells[x2][y2].flagged && !this.cells[x2][y2].isBomb())
       {
         this.cells[x2][y2].shown = true;
         listCaseChanged.push(this.cells[x2][y2]);
         continue;
       }
-      
+
       if (!this.cells[x2][y2].flagged && this.cells[x2][y2].isBomb())
       {
         lost = true;
       }
-      
+
       listCaseChanged = listCaseChanged.concat(this.reveal(x2, y2).cases);
     }
   }
-  
+
   return {cases: listCaseChanged, lost: lost};
 };
 
 Grid.prototype.getBombs = function ()
 {
   var bombList = [];
-  
+
   for (var cell in this.cells) {
     if (cell.isBomb())
     {
       bombList.push(cell);
     }
   }
-  
+
   return bombList;
 };
 
@@ -227,19 +230,19 @@ Grid.prototype.getBombs = function ()
 Grid.prototype.moveOutBomb = function (x, y)
 {
   this.addBombs(1);
-  
+
   this.cells[x][y] = this.getNbBombsAround(x, y);
 }
 
 Grid.prototype.toggleFlag = function (x, y)
 {
   var cell = this.cells[x][y];
-  
-  if (cell.isShown()) 
+
+  if (cell.isShown())
   {
     return;
   }
-  
+
   if (cell.isFlagged())
   {
     cell.setFlagged(false);
@@ -251,10 +254,8 @@ Grid.prototype.toggleFlag = function (x, y)
       console.log('Nombre max de drapeau atteint !');
       return;
     }
-    
+
     cell.setFlagged(true);
     grid.flags--;
   }
 }
-
-
