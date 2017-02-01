@@ -7,6 +7,8 @@ document.addEventListener('contextmenu', function (event) {
 });
 
 $(document).ready(function () {
+    stopGame = false;
+
     $('select#niveau').change(function(){   // Selection du niveau
       console.log($('select#niveau').val());
       switch ($('select#niveau').val()) {
@@ -59,6 +61,7 @@ function testParameters(largeur, hauteur, bombs) {
 
 
 function initGameboard() {
+    stopGame = false;
     generateLayout(largeur, hauteur);
     grid = new Grid(largeur, hauteur);
     grid.addBombs(bombs);
@@ -129,7 +132,9 @@ function initEvents(elem) {
         var y = parseInt(elem.attr("data-y"));
 
         if (event.button == 0) {
-
+            if (!grid.timer) {
+              timer();
+            }
             if (grid.cells[x][y].flagged) {
                 console.log('Erreur, il y a un drapeau');
             } else {
@@ -224,7 +229,8 @@ function initEvents(elem) {
 
 function gameOverLose(elem) {
     $('#modal-lost').modal('show');
-    return true;
+    stopGame = true;
+    return stopGame;
 }
 
 function gameOverWin() {
@@ -239,8 +245,22 @@ function gameOverWin() {
         }
     });
     if (i == grid.bombs) {
-        console.log(i);
         $('#modal-win').modal('show');
-        return true;
+        stopGame = true;
+        return stopGame;
     }
+}
+
+function timer(){
+  if (!grid.timer) {
+    grid.timer = true;
+  }
+  grid.second++;
+  $('#timer').text(grid.second);
+
+  compte=setTimeout(function() {
+    if (!stopGame) {
+      timer();
+    }
+  },1000)
 }
