@@ -132,7 +132,6 @@ function initEvents(elem) {
         var y = parseInt(elem.attr("data-y"));
 
         if (event.button == 0) {
-<<<<<<< HEAD
             if (!grid.timer) {
               timer();
             }
@@ -161,25 +160,23 @@ function initEvents(elem) {
                     grid.cells[x][y].shown = true;
                     gameOverWin();
                 }
-=======
-            
+
             var result = grid.reveal(x, y);
-            
+
             result.cases.forEach(updateView);
-            
+
             if (result.lost) {
                 gameOverLose();
             }
             else {
                 gameOverWin();
->>>>>>> 85158527a8cf5a5dcfa31167f740bc7a973491fe
             }
-
+          }  
         } else if (event.button == 2) {
             console.log('clic du bouton droit');
-            
+
             grid.toggleFlag(x, y);
-            
+
             updateView(grid.cells[x][y]);
             $('#nbbombes').text(grid.flags + ' bombes');
         }
@@ -212,7 +209,7 @@ function initEvents(elem) {
 function updateView(cell)
 {
     var td = $('td[data-x="' + cell.x + '"][data-y="' + cell.y + '"]').removeClass();
-    
+
     if (cell.shown)
     {
         if (cell.isBomb())

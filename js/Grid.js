@@ -87,12 +87,8 @@ Grid.prototype.reveal = function (x,y)
   }
 
   this.cells[x][y].shown = true;
-<<<<<<< HEAD
 
-=======
-  
   var lost = this.cells[x][y].isBomb();
->>>>>>> 85158527a8cf5a5dcfa31167f740bc7a973491fe
   var listCaseChanged = [this.cells[x][y]];
 
   if (this.cells[x][y].value === 0)
@@ -113,13 +109,10 @@ Grid.prototype.reveal = function (x,y)
       }
     }
   }
-<<<<<<< HEAD
 
   return listCaseChanged;
-=======
-  
+
   return {cases: listCaseChanged, lost: lost};
->>>>>>> 85158527a8cf5a5dcfa31167f740bc7a973491fe
 };
 
 Grid.prototype.getNbFlagsAround = function (x, y)
@@ -213,13 +206,11 @@ Grid.prototype.quickReveal = function (x, y)
       {
         lost = true;
       }
-<<<<<<< HEAD
 
       listCaseChanged = listCaseChanged.concat(this.reveal(x2, y2));
-=======
-      
+
       listCaseChanged = listCaseChanged.concat(this.reveal(x2, y2).cases);
->>>>>>> 85158527a8cf5a5dcfa31167f740bc7a973491fe
+
     }
   }
 
@@ -247,18 +238,16 @@ Grid.prototype.moveOutBomb = function (x, y)
 
   this.cells[x][y] = this.getNbBombsAround(x, y);
 }
-<<<<<<< HEAD
-=======
 
 Grid.prototype.toggleFlag = function (x, y)
 {
   var cell = this.cells[x][y];
-  
-  if (cell.isShown()) 
+
+  if (cell.isShown())
   {
     return;
   }
-  
+
   if (cell.isFlagged())
   {
     cell.setFlagged(false);
@@ -270,11 +259,8 @@ Grid.prototype.toggleFlag = function (x, y)
       console.log('Nombre max de drapeau atteint !');
       return;
     }
-    
+
     cell.setFlagged(true);
     grid.flags--;
   }
 }
-
-
->>>>>>> 85158527a8cf5a5dcfa31167f740bc7a973491fe
