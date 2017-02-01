@@ -2,18 +2,42 @@
  * Created by Lucas on 30/01/2017.
  */
 
-document.addEventListener('contextmenu', event => event.preventDefault());
+document.addEventListener('contextmenu', function (event) {
+    event.preventDefault()
+});
 
 $(document).ready(function () {
+    $('select#niveau').change(function(){   // Selection du niveau
+      console.log($('select#niveau').val());
+      switch ($('select#niveau').val()) {
+        case "Facile":
+          $('#largeur').val(15);
+          $('#hauteur').val(15);
+          $('#bombs').val(25);
+          break;
+        case "Moyen":
+          $('#largeur').val(20);
+          $('#hauteur').val(20);
+          $('#bombs').val(50);
+          break;
+        case "Difficile":
+          $('#largeur').val(30);
+          $('#hauteur').val(30);
+          $('#bombs').val(130);
+          break;
+        default:
+
+      }
+    });
 
     $('button#validate').click(function () {
-        if ($('#largeur').val() != "" && $('hauteur').val() != "" && $('#bombs').val() != "") {
+        if ($('#largeur').val() != "" && $('#hauteur').val() != "" && $('#bombs').val() != "") {
             largeur = parseInt($('#largeur').val());
             hauteur = parseInt($('#hauteur').val());
             bombs = parseInt($('#bombs').val());
 
-            if (!isNaN(largeur) && !isNaN(hauteur) && !isNaN(bombs)){
-                if (testParameters(largeur,hauteur,bombs)) {
+            if (!isNaN(largeur) && !isNaN(hauteur) && !isNaN(bombs)) {
+                if (testParameters(largeur, hauteur, bombs)) {
                     initGameboard();
                 }
             }
@@ -25,8 +49,8 @@ $(document).ready(function () {
 
 function testParameters(largeur, hauteur, bombs) {
 
-    if ( ((largeur * hauteur)/3)*2 >= bombs ){
-        if (largeur <= 40 && hauteur <= 50){
+    if (((largeur * hauteur) / 3) * 2 >= bombs) {
+        if (largeur <= 40 && hauteur <= 50) {
             return true;
         }
     }
@@ -47,17 +71,37 @@ function initGameboard() {
         return false;
     };
 
-    $('#reset').click(function () {
-        generateLayout(largeur, hauteur);
-        grid = new Grid(largeur, hauteur);
-        grid.addBombs(bombs);
-        $('#nbbombes').text(grid.flags + ' bombes');
+    $('.reset').each(function () {
+        $(this).click(function () {
+            $('#modal-lost').modal('hide');
+            $('#modal-win').modal('hide');
+
+            generateLayout(largeur, hauteur);
+            grid = new Grid(largeur, hauteur);
+            grid.addBombs(bombs);
+            $('#nbbombes').text(grid.flags + ' bombes');
 
 
-        $('td').each(function () {
-            initEvents($(this));
+            $('td').each(function () {
+                initEvents($(this));
+            });
+
         });
+    });
 
+    $('.menu-back').each(function () {
+        $(this).click(function () {
+            $('#modal-lost').modal('hide');
+            $('#modal-win').modal('hide');
+
+            $('#largeur').val(largeur);
+            $('#hauteur').val(hauteur);
+            $('#bombs').val(bombs);
+
+            $('#menu').css('display', 'block');
+            $('#gameboard').css('display', 'none');
+
+        });
     });
 
     $('td').each(function () {
@@ -77,7 +121,7 @@ function generateLayout(width, height) {
 }
 
 
-function initEvents(elem){
+function initEvents(elem) {
 
     elem.mousedown(function (event) {
 
@@ -92,9 +136,10 @@ function initEvents(elem){
                 if (!grid.cells[x][y].isShown()) {
                     if (grid.cells[x][y].isBomb()) {
                         elem.addClass("bomb");
+                        gameOverLose();
                     } else if (grid.cells[x][y].value == 0) {
                         elem.addClass("empty");
-                        cases = grid.reveal(x,y);
+                        cases = grid.reveal(x, y);
                         cases.forEach(function (el) {
                             if (el.value == 0) {
                                 $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('empty');
@@ -108,7 +153,6 @@ function initEvents(elem){
                         elem.html(grid.cells[x][y].getValue())
                     }
                     grid.cells[x][y].shown = true;
-                    gameOverLose(grid.cells[x][y].getValue());
                     gameOverWin();
                 }
             }
@@ -142,15 +186,14 @@ function initEvents(elem){
         if (grid.cells[x][y].flagged) {
             console.log('Erreur, il y a un drapeau');
         } else {
-            if (grid.cells[x][y].isShown())
-            {
-                result = grid.quickReveal(x,y);
+            if (grid.cells[x][y].isShown()) {
+                result = grid.quickReveal(x, y);
                 console.log(result.cases);
-                
+
                 result.cases.forEach(function (el) {
                     if (el.value == 0) {
                         $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('empty');
-                    } 
+                    }
                     else if (el.flagged && !el.isBomb()) {
                         $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').removeClass('flag');
                         $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('flagError');
@@ -163,39 +206,41 @@ function initEvents(elem){
                         $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').html(el.value);
                     }
                 });
-                
+
+
                 if (result.lost){
                     // Perdu!
-                } 
+
+                if (result.lost) {
+                    gameOverLose()
+                }
             }
         }
 
-    })
+      }
+    });
 
 }
 
-function gameOverLose(elem){
-  if (elem == 'B') {
-      console.log("perdu");
-      $('#modal-lost').modal('show');
-      return true;
-  }
-}
-
-function gameOverWin(){
-  var i = 0;
-  $('td').each(function () {
-    if ($(this).hasClass('bomb')) {
-      return false
-    } else if(!$(this).hasClass('empty') && !$(this).hasClass('number')){
-      i += 1;
-    } else if($(this).hasClass('flag')){
-      i += 1;
-    }
-  });
-  if (i == grid.bombs) {
-    console.log(i);
-    console.log('gagné');
+function gameOverLose(elem) {
+    $('#modal-lost').modal('show');
     return true;
-  }
+}
+
+function gameOverWin() {
+    var i = 0;
+    $('td').each(function () {
+        if ($(this).hasClass('bomb')) {
+            return false
+        } else if (!$(this).hasClass('empty') && !$(this).hasClass('number')) {
+            i += 1;
+        } else if ($(this).hasClass('flag')) {
+            i += 1;
+        }
+    });
+    if (i == grid.bombs) {
+        console.log(i);
+        $('#modal-win').modal('show');
+        return true;
+    }
 }

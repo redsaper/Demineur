@@ -49,8 +49,8 @@ Grid.prototype.addBomb = function (x, y)
 
 Grid.prototype.addBombs = function (nbBombs)
 {
-  this.bombs = nbBombs;
-  this.flags = nbBombs;
+  this.bombs += nbBombs;
+  this.flags += nbBombs;
 
   for (var i = 0; i < nbBombs; i++)
   {
@@ -135,6 +135,32 @@ Grid.prototype.getNbFlagsAround = function (x, y)
   return nbFlagsAround;
 };
 
+Grid.prototype.getNbBombsAround = function (x, y)
+{
+  var nbBombsAround = 0;
+  
+  for (var i = -1 ; i <= 1 ; i++)
+  {
+    for (var j = -1 ; j <= 1 ; j++)
+    {
+      var x2 = x + i;
+      var y2 = y + j;
+
+      if (!this.isValidCoordinate(x2, y2) || (x2 === x && y2 === y))
+      {
+        continue;
+      }
+
+      if (this.cells[x2][y2].isBomb())
+      {
+        nbBombsAround++;
+      }
+    }
+  }
+  
+  return nbBombsAround;
+};
+
 Grid.prototype.quickReveal = function (x, y)
 {
   if (this.cells[x][y].isBomb())
@@ -157,17 +183,19 @@ Grid.prototype.quickReveal = function (x, y)
       var x2 = x + i;
       var y2 = y + j;
 
-      if (!this.isValidCoordinate(x2, y2) || this.cells[x2][y2].flagged)
+
+      if (!this.isValidCoordinate(x2, y2))
       {
-        if (!this.cells[x2][y2].isBomb())
-        {
-          listCaseChanged.push(this.cells[x2][y2]);
-        }
-        
         continue;
       }
       
-      if (this.cells[x2][y2].isBomb())
+      if (this.cells[x2][y2].flagged && !this.cells[x2][y2].isBomb())
+      {
+        listCaseChanged.push(this.cells[x2][y2]);
+        continue;
+      }
+      
+      if (!this.cells[x2][y2].flagged && this.cells[x2][y2].isBomb())
       {
         lost = true;
       }
@@ -178,3 +206,27 @@ Grid.prototype.quickReveal = function (x, y)
   
   return {cases: listCaseChanged, lost: lost};
 };
+
+Grid.prototype.getBombs = function ()
+{
+  var bombList = [];
+  
+  for (var cell in this.cells) {
+    if (cell.isBomb())
+    {
+      bombList.push(cell);
+    }
+  }
+  
+  return bombList;
+};
+
+
+Grid.prototype.moveOutBomb = function (x, y)
+{
+  this.addBombs(1);
+  
+  this.cells[x][y] = this.getNbBombsAround(x, y);
+}
+
+
