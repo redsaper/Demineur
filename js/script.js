@@ -210,11 +210,17 @@ function updateView(cell)
         {
             td.addClass('flag');
         }
+
+        if (cell.isBomb() && !cell.isFlagged()){
+            td.addClass('bomb');
+        }
     }
 }
 
 function gameOverLose(elem) {
     $('#modal-lost').modal('show');
+    bombCells = grid.getBombs();
+    bombCells.forEach(updateView);
     return true;
 }
 

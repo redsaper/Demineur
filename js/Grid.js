@@ -212,11 +212,12 @@ Grid.prototype.quickReveal = function (x, y)
 Grid.prototype.getBombs = function ()
 {
   var bombList = [];
-  
-  for (var cell in this.cells) {
-    if (cell.isBomb())
-    {
-      bombList.push(cell);
+
+  for (var x = 0; x < this.height; x++){
+    for (var y = 0; y < this.width; y++){
+      if (this.cells[x][y].isBomb()){
+        bombList.push(this.cells[x][y]);
+      }
     }
   }
   
