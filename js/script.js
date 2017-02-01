@@ -184,6 +184,8 @@ function updateView(cell)
 {
     var td = $('td[data-x="' + cell.x + '"][data-y="' + cell.y + '"]').removeClass();
     
+    console.log(cell);
+    
     if (cell.isShown())
     {
         if (cell.isBomb())
@@ -209,16 +211,9 @@ function updateView(cell)
             }
         }
     }
-    else
+    else if (cell.isFlagged())
     {
-        if (cell.isFlagged())
-        {
-            td.addClass('flag');
-        }
-
-        if (cell.isBomb() && !cell.isFlagged()){
-            td.addClass('bomb');
-        }
+        td.addClass('flag');
     }
 }
 
