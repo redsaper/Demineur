@@ -7,7 +7,10 @@ function Grid(width, height)
   this.flags = 0;
   
   this.cells = [];
-  
+
+  this.timer = false;
+  this.second = 0;
+
   for (var x = 0; x < width; x++)
   {
     this.cells[x] = [];
@@ -38,7 +41,7 @@ Grid.prototype.addBomb = function (x, y)
       {
         continue;
       }
-      
+
       if (!this.cells[x2][y2].isBomb())
       {
         this.cells[x2][y2].value++;
@@ -56,13 +59,13 @@ Grid.prototype.addBombs = function (nbBombs)
   {
     var x = Math.floor((Math.random() * this.width));
     var y = Math.floor((Math.random() * this.height));
-    
+
     while (this.cells[x][y].isBomb())
     {
       x = Math.floor((Math.random() * this.width));
       y = Math.floor((Math.random() * this.height));
     }
-    
+
     this.addBomb(x, y);
   }
 };
@@ -220,7 +223,7 @@ Grid.prototype.getBombs = function ()
       }
     }
   }
-  
+
   return bombList;
 };
 
@@ -228,19 +231,19 @@ Grid.prototype.getBombs = function ()
 Grid.prototype.moveOutBomb = function (x, y)
 {
   this.addBombs(1);
-  
+
   this.cells[x][y] = this.getNbBombsAround(x, y);
 }
 
 Grid.prototype.toggleFlag = function (x, y)
 {
   var cell = this.cells[x][y];
-  
-  if (cell.isShown()) 
+
+  if (cell.isShown())
   {
     return;
   }
-  
+
   if (cell.isFlagged())
   {
     cell.setFlagged(false);
@@ -252,10 +255,8 @@ Grid.prototype.toggleFlag = function (x, y)
       console.log('Nombre max de drapeau atteint !');
       return;
     }
-    
+
     cell.setFlagged(true);
     grid.flags--;
   }
 }
-
-
