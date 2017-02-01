@@ -1,33 +1,33 @@
 describe("Grid", function() {
-  // var player;
-  // var song;
 
-  beforeEach(function() {
-    // player = new Player();
-
-    // song = new Song();
-  });
+  var grille = new Grid(2,2);
 
   it("should not be empty", function() {
 
     expect(Grid).toBeDefined();
-    // player.play(song);
-    // expect(player.currentlyPlayingSong).toEqual(song);
-    //
-    // //demonstrates use of custom matcher
-    // expect(player).toBePlaying(song);
-  });
-
-  it("Nombre bombes ok", function() {
-
-    expect(Grid).nbBombs;
   });
 
   it("Nombre drapeaux = nombre bombes", function() {
 
-    expect(Grid.flags == Grid.bombs);
+    expect(grille.flags - grille.bombs).toEqual(0);
   });
 
+  it("No bomb", function() {
+
+    expect((grille.cells[0][0]).value).toEqual(0);
+    expect((grille.cells[0][1]).value).toEqual(0);
+    expect((grille.cells[1][0]).value).toEqual(0);
+    expect((grille.cells[1][1]).value).toEqual(0);
+  });
+
+  it("Ajout bombe", function() {
+
+    grille.addBomb(1,1);
+    expect((grille.cells[0][0]).value).toEqual(1);
+    expect((grille.cells[0][1]).value).toEqual(1);
+    expect((grille.cells[1][0]).value).toEqual(1);
+    expect((grille.cells[1][1]).isBomb()).toBe(true);
+  });
 });
 
 describe("Case", function() {
@@ -52,7 +52,12 @@ describe("Case", function() {
   it("case has not a bomb near", function() {
 
     case1.value=0;
-    expect(case1.value).toBe(Integer);
+    expect(case1.value).toEqual(0);
+  });
+  it("case has a bomb near", function() {
+
+    case2 = new Case(2,12,5);
+    expect(case2.value).not.toEqual(0);
   });
 
 
