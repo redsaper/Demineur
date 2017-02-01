@@ -217,7 +217,8 @@ function initEvents(elem) {
             }
         }
 
-    })
+      }
+    });
 
 }
 
