@@ -89,8 +89,8 @@ function initEvents(elem){
             if (grid.cells[x][y].flagged) {
                 console.log('Erreur, il y a un drapeau');
             } else {
-                if (!grid.cells[x][y].shown) {
-                    if (grid.cells[x][y].value == "B") {
+                if (!grid.cells[x][y].isShown()) {
+                    if (grid.cells[x][y].isBomb()) {
                         elem.addClass("bomb");
                     } else if (grid.cells[x][y].value == 0) {
                         elem.addClass("empty");
@@ -100,28 +100,28 @@ function initEvents(elem){
                                 $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('empty');
                             } else {
                                 $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('number');
-                                $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').html(el.value);
+                                $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').html(el.getValue());
                             }
                         })
                     } else {
                         elem.addClass("number");
-                        elem.html(grid.cells[x][y].value)
+                        elem.html(grid.cells[x][y].getValue())
                     }
                     grid.cells[x][y].shown = true;
-                    gameOverLose(grid.cells[x][y].value);
+                    gameOverLose(grid.cells[x][y].getValue());
                     gameOverWin();
                 }
             }
 
         } else if (event.button == 2) {
             console.log('clic du bouton droit');
-            if (!grid.cells[x][y].shown) {
-                if (grid.cells[x][y].flagged) {
-                    grid.cells[x][y].flagged = false;
+            if (!grid.cells[x][y].isShown()) {
+                if (grid.cells[x][y].isFlagged()) {
+                    grid.cells[x][y].setFlagged(false);
                     elem.removeClass('flag');
                     grid.flags += 1;
                 } else if (grid.flags > 0) {
-                    grid.cells[x][y].flagged = true;
+                    grid.cells[x][y].setFlagged(true);
                     elem.addClass('flag');
                     grid.flags -= 1;
                 } else if (grid.flags == 0) {
@@ -142,7 +142,7 @@ function initEvents(elem){
         if (grid.cells[x][y].flagged) {
             console.log('Erreur, il y a un drapeau');
         } else {
-            if (grid.cells[x][y].shown) {
+            if (grid.cells[x][y].isShown()) {
 
                 cases = grid.quickReveal(x,y);
                 console.log(cases);
@@ -150,11 +150,11 @@ function initEvents(elem){
 
                 } else {
                     cases.forEach(function (el) {
-                        if (el.value == 0) {
+                        if (el.getValue() == 0) {
                             $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('empty');
                         } else {
                             $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('number');
-                            $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').html(el.value);
+                            $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').html(el.getValue());
                         }
                     })
                 }
@@ -168,8 +168,9 @@ function initEvents(elem){
 
 function gameOverLose(elem){
   if (elem == 'B') {
-    console.log('perdu');
-    return true;
+      console.log("perdu");
+      $('#modal-lost').modal('show');
+      return true;
   }
 }
 
