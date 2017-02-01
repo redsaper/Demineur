@@ -4,6 +4,7 @@ describe("Grid", function() {
 
   beforeEach(function() {
     // player = new Player();
+
     // song = new Song();
   });
 
@@ -27,4 +28,12 @@ describe("Grid", function() {
     expect(Grid.flags == Grid.bombs);
   });
 
+});
+
+describe("Case", function() {
+
+  it("should not be empty", function() {
+
+    expect(Case).toBeDefined();
+  });
 });
