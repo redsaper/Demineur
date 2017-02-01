@@ -5,6 +5,28 @@
 document.addEventListener('contextmenu', event => event.preventDefault());
 
 $(document).ready(function () {
+    $('select#niveau').change(function(){   // Selection du niveau
+      console.log($('select#niveau').val());
+      switch ($('select#niveau').val()) {
+        case "Facile":
+          $('#largeur').val(15);
+          $('#hauteur').val(15);
+          $('#bombs').val(25);
+          break;
+        case "Moyen":
+          $('#largeur').val(20);
+          $('#hauteur').val(20);
+          $('#bombs').val(50);
+          break;
+        case "Difficile":
+          $('#largeur').val(30);
+          $('#hauteur').val(30);
+          $('#bombs').val(130);
+          break;
+        default:
+
+      }
+    });
 
     $('button#validate').click(function () {
         if ($('#largeur').val() != "" && $('hauteur').val() != "" && $('#bombs').val() != "") {
@@ -146,11 +168,11 @@ function initEvents(elem){
             {
                 result = grid.quickReveal(x,y);
                 console.log(result.cases);
-                
+
                 result.cases.forEach(function (el) {
                     if (el.value == 0) {
                         $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('empty');
-                    } 
+                    }
                     else if (el.flagged && !el.isBomb()) {
                         $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').removeClass('flag');
                         $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('flagError');
@@ -163,10 +185,10 @@ function initEvents(elem){
                         $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').html(el.value);
                     }
                 });
-                
+
                 if (result.lost){
                     // Perdu!
-                } 
+                }
             }
         }
 
