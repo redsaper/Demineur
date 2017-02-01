@@ -49,8 +49,8 @@ Grid.prototype.addBomb = function (x, y)
 
 Grid.prototype.addBombs = function (nbBombs)
 {
-  this.bombs = nbBombs;
-  this.flags = nbBombs;
+  this.bombs += nbBombs;
+  this.flags += nbBombs;
 
   for (var i = 0; i < nbBombs; i++)
   {
@@ -157,13 +157,15 @@ Grid.prototype.quickReveal = function (x, y)
       var x2 = x + i;
       var y2 = y + j;
 
-      if (!this.isValidCoordinate(x2, y2) || this.cells[x2][y2].flagged)
+
+      if (!this.isValidCoordinate(x2, y2))
       {
-        if (!this.cells[x2][y2].isBomb())
-        {
-          listCaseChanged.push(this.cells[x2][y2]);
-        }
-        
+        continue;
+      }
+      
+      if (this.cells[x2][y2].flagged && !this.cells[x2][y2].isBomb())
+      {
+        listCaseChanged.push(this.cells[x2][y2]);
         continue;
       }
       
@@ -177,4 +179,18 @@ Grid.prototype.quickReveal = function (x, y)
   }
   
   return {cases: listCaseChanged, lost: lost};
+};
+
+Grid.prototype.getBombs = function ()
+{
+  var bombList = [];
+  
+  for (var cell in this.cells) {
+    if (cell.isBomb())
+    {
+      bombList.push(cell);
+    }
+  }
+  
+  return bombList;
 };
