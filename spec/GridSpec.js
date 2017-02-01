@@ -8,6 +8,8 @@ describe("Grid", function() {
   });
 
   it("should not be empty", function() {
+
+    expect(Grid).toBeDefined();
     // player.play(song);
     // expect(player.currentlyPlayingSong).toEqual(song);
     //
