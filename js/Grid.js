@@ -83,11 +83,16 @@ Grid.prototype.reveal = function (x,y)
 {
   if (this.cells[x][y].shown || this.cells[x][y].flagged)
   {
-    return [];
+    return {cases: [], lost: false};
   }
 
   this.cells[x][y].shown = true;
+<<<<<<< HEAD
 
+=======
+  
+  var lost = this.cells[x][y].isBomb();
+>>>>>>> 85158527a8cf5a5dcfa31167f740bc7a973491fe
   var listCaseChanged = [this.cells[x][y]];
 
   if (this.cells[x][y].value === 0)
@@ -104,12 +109,17 @@ Grid.prototype.reveal = function (x,y)
           continue;
         }
 
-        listCaseChanged = listCaseChanged.concat(this.reveal(x2, y2));
+        listCaseChanged = listCaseChanged.concat(this.reveal(x2, y2).cases);
       }
     }
   }
+<<<<<<< HEAD
 
   return listCaseChanged;
+=======
+  
+  return {cases: listCaseChanged, lost: lost};
+>>>>>>> 85158527a8cf5a5dcfa31167f740bc7a973491fe
 };
 
 Grid.prototype.getNbFlagsAround = function (x, y)
@@ -194,6 +204,7 @@ Grid.prototype.quickReveal = function (x, y)
 
       if (this.cells[x2][y2].flagged && !this.cells[x2][y2].isBomb())
       {
+        this.cells[x2][y2].shown = true;
         listCaseChanged.push(this.cells[x2][y2]);
         continue;
       }
@@ -202,8 +213,13 @@ Grid.prototype.quickReveal = function (x, y)
       {
         lost = true;
       }
+<<<<<<< HEAD
 
       listCaseChanged = listCaseChanged.concat(this.reveal(x2, y2));
+=======
+      
+      listCaseChanged = listCaseChanged.concat(this.reveal(x2, y2).cases);
+>>>>>>> 85158527a8cf5a5dcfa31167f740bc7a973491fe
     }
   }
 
@@ -231,3 +247,34 @@ Grid.prototype.moveOutBomb = function (x, y)
 
   this.cells[x][y] = this.getNbBombsAround(x, y);
 }
+<<<<<<< HEAD
+=======
+
+Grid.prototype.toggleFlag = function (x, y)
+{
+  var cell = this.cells[x][y];
+  
+  if (cell.isShown()) 
+  {
+    return;
+  }
+  
+  if (cell.isFlagged())
+  {
+    cell.setFlagged(false);
+    grid.flags++;
+  }
+  else
+  {
+    if (this.flags === 0) {
+      console.log('Nombre max de drapeau atteint !');
+      return;
+    }
+    
+    cell.setFlagged(true);
+    grid.flags--;
+  }
+}
+
+
+>>>>>>> 85158527a8cf5a5dcfa31167f740bc7a973491fe

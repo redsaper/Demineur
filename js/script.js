@@ -132,6 +132,7 @@ function initEvents(elem) {
         var y = parseInt(elem.attr("data-y"));
 
         if (event.button == 0) {
+<<<<<<< HEAD
             if (!grid.timer) {
               timer();
             }
@@ -160,25 +161,27 @@ function initEvents(elem) {
                     grid.cells[x][y].shown = true;
                     gameOverWin();
                 }
+=======
+            
+            var result = grid.reveal(x, y);
+            
+            result.cases.forEach(updateView);
+            
+            if (result.lost) {
+                gameOverLose();
+            }
+            else {
+                gameOverWin();
+>>>>>>> 85158527a8cf5a5dcfa31167f740bc7a973491fe
             }
 
         } else if (event.button == 2) {
             console.log('clic du bouton droit');
-            if (!grid.cells[x][y].isShown()) {
-                if (grid.cells[x][y].isFlagged()) {
-                    grid.cells[x][y].setFlagged(false);
-                    elem.removeClass('flag');
-                    grid.flags += 1;
-                } else if (grid.flags > 0) {
-                    grid.cells[x][y].setFlagged(true);
-                    elem.addClass('flag');
-                    grid.flags -= 1;
-                } else if (grid.flags == 0) {
-                    console.log('Nombre max de drapeau atteint !');
-                }
-                $('#nbbombes').text(grid.flags + ' bombes');
-                console.log('Nombre de bombes : ' + grid.flags);
-            }
+            
+            grid.toggleFlag(x, y);
+            
+            updateView(grid.cells[x][y]);
+            $('#nbbombes').text(grid.flags + ' bombes');
         }
     });
 
@@ -195,36 +198,53 @@ function initEvents(elem) {
                 result = grid.quickReveal(x, y);
                 console.log(result.cases);
 
-                result.cases.forEach(function (el) {
-                    if (el.value == 0) {
-                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('empty');
-                    }
-                    else if (el.flagged && !el.isBomb()) {
-                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').removeClass('flag');
-                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('flagError');
-                    }
-                    else if (el.isBomb()) {
-                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('bomb');
-                    }
-                    else {
-                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('number');
-                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').html(el.value);
-                    }
-                });
-
-
-                if (result.lost){
-                    // Perdu!
+                result.cases.forEach(updateView);
 
                 if (result.lost) {
                     gameOverLose()
                 }
             }
         }
-
-      }
     });
 
+}
+
+function updateView(cell)
+{
+    var td = $('td[data-x="' + cell.x + '"][data-y="' + cell.y + '"]').removeClass();
+    
+    if (cell.shown)
+    {
+        if (cell.isBomb())
+        {
+            td.addClass('bomb');
+        }
+        else {
+            if (cell.isFlagged())
+            {
+                td.addClass('flagError');
+            }
+            else
+            {
+                if (cell.getValue() === 0)
+                {
+                    td.addClass('empty');
+                }
+                else
+                {
+                    td.addClass('number');
+                    td.html(cell.getValue());
+                }
+            }
+        }
+    }
+    else
+    {
+        if (cell.isFlagged())
+        {
+            td.addClass('flag');
+        }
+    }
 }
 
 function gameOverLose(elem) {
