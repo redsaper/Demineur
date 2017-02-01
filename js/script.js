@@ -14,8 +14,8 @@ $(document).ready(function () {
             hauteur = parseInt($('#hauteur').val());
             bombs = parseInt($('#bombs').val());
 
-            if (!isNaN(largeur) && !isNaN(hauteur) && !isNaN(bombs)) {
-                if (testParameters(largeur, hauteur, bombs)) {
+            if (!isNaN(largeur) && !isNaN(hauteur) && !isNaN(bombs)){
+                if (testParameters(largeur,hauteur,bombs)) {
                     initGameboard();
                 }
             }
@@ -27,8 +27,8 @@ $(document).ready(function () {
 
 function testParameters(largeur, hauteur, bombs) {
 
-    if (((largeur * hauteur) / 3) * 2 >= bombs) {
-        if (largeur <= 40 && hauteur <= 50) {
+    if ( ((largeur * hauteur)/3)*2 >= bombs ){
+        if (largeur <= 40 && hauteur <= 50){
             return true;
         }
     }
@@ -84,7 +84,7 @@ function generateLayout(width, height) {
 }
 
 
-function initEvents(elem) {
+function initEvents(elem){
 
     elem.mousedown(function (event) {
 
@@ -101,7 +101,7 @@ function initEvents(elem) {
                         elem.addClass("bomb");
                     } else if (grid.cells[x][y].value == 0) {
                         elem.addClass("empty");
-                        cases = grid.reveal(x, y);
+                        cases = grid.reveal(x,y);
                         cases.forEach(function (el) {
                             if (el.value == 0) {
                                 $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('empty');
@@ -149,23 +149,31 @@ function initEvents(elem) {
         if (grid.cells[x][y].flagged) {
             console.log('Erreur, il y a un drapeau');
         } else {
-            if (grid.cells[x][y].isShown()) {
+            if (grid.cells[x][y].isShown())
+            {
+                result = grid.quickReveal(x,y);
+                console.log(result.cases);
 
-                cases = grid.quickReveal(x, y);
-                console.log(cases);
-                if (cases == false) {
+                result.cases.forEach(function (el) {
+                    if (el.value == 0) {
+                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('empty');
+                    }
+                    else if (el.flagged && !el.isBomb()) {
+                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').removeClass('flag');
+                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('flagError');
+                    }
+                    else if (el.isBomb()) {
+                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('bomb');
+                    }
+                    else {
+                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('number');
+                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').html(el.value);
+                    }
+                });
 
-                } else {
-                    cases.forEach(function (el) {
-                        if (el.getValue() == 0) {
-                            $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('empty');
-                        } else {
-                            $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('number');
-                            $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').html(el.getValue());
-                        }
-                    })
+                if (result.lost){
+                    // Perdu!
                 }
-
             }
         }
 
