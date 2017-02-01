@@ -144,21 +144,29 @@ function initEvents(elem){
         } else {
             if (grid.cells[x][y].shown) {
 
-                cases = grid.quickReveal(x,y);
-                console.log(cases);
-                if (cases == false){
-
-                } else {
-                    cases.forEach(function (el) {
-                        if (el.value == 0) {
-                            $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('empty');
-                        } else {
-                            $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('number');
-                            $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').html(el.value);
-                        }
-                    })
-                }
-
+                result = grid.quickReveal(x,y);
+                console.log(result.cases);
+                
+                result.cases.forEach(function (el) {
+                    if (el.value == 0) {
+                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('empty');
+                    } 
+                    else if (el.flagged && !el.isBomb()) {
+                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').removeClass('flag');
+                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('flagError');
+                    }
+                    else if (el.isBomb()) {
+                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('bomb');
+                    }
+                    else {
+                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('number');
+                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').html(el.value);
+                    }
+                });
+                
+                if (result.lost){
+                    // Perdu!
+                } 
             }
         }
 

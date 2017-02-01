@@ -85,12 +85,6 @@ Grid.prototype.reveal = function (x,y)
   
   this.cells[x][y].shown = true;
   
-  if (this.cells[x][y].isBomb())
-  {
-    return false;
-  }
-  
-  
   var listCaseChanged = [this.cells[x][y]];
   
   if (this.cells[x][y].value === 0)
@@ -145,14 +139,15 @@ Grid.prototype.quickReveal = function (x, y)
 {
   if (this.cells[x][y].isBomb())
   {
-    return false;
+    return {cases: [], lost: true};
   }
   
   if (this.getNbFlagsAround(x, y) != this.cells[x][y].value)
   {
-      return [];
+      return {cases: [], lost: false};
   }
   
+  var lost = false;
   var listCaseChanged = [];
   
   for (var i = -1 ; i <= 1 ; i++)
@@ -164,17 +159,22 @@ Grid.prototype.quickReveal = function (x, y)
 
       if (!this.isValidCoordinate(x2, y2) || this.cells[x2][y2].flagged)
       {
+        if (!this.cells[x2][y2].isBomb())
+        {
+          listCaseChanged.push(this.cells[x2][y2]);
+        }
+        
         continue;
       }
       
       if (this.cells[x2][y2].isBomb())
       {
-        return false;
+        lost = true;
       }
       
       listCaseChanged = listCaseChanged.concat(this.reveal(x2, y2));
     }
   }
   
-  return listCaseChanged;
+  return {cases: listCaseChanged, lost: lost};
 };
