@@ -179,7 +179,7 @@ function updateView(cell)
 {
     var td = $('td[data-x="' + cell.x + '"][data-y="' + cell.y + '"]').removeClass();
     
-    if (cell.shown)
+    if (cell.isShown())
     {
         if (cell.isBomb())
         {
