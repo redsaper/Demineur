@@ -11,6 +11,7 @@
     <script type="application/javascript" src="./js/bootstrap.js"></script>
     <script type="application/javascript" src="./js/Case.js"></script>
     <script type="application/javascript" src="./js/Grid.js"></script>
+    <script type="application/javascript" src="./js/Timer.js"></script>
     <script type="application/javascript" src="./js/script.js"></script>
 </head>
 <body>
@@ -26,18 +27,19 @@
                       <option>Facile
                       <option>Moyen
                       <option>Difficile
+                      <option>Personnalisé
                     </select>
                 </div>
                 <div class="col-xs-6">
-                    <label for="largeur">Largeur : <input type="text" value="15" id="largeur" name="largeur"></label>
+                    <label for="largeur">Largeur : <input type="text" value="15" id="largeur" name="largeur" disabled="disabled"></label>
                 </div>
                 <div class="col-xs-6">
-                    <label for="hauteur">Hauteur : <input type="text" value="15" id="hauteur" name="hauteur"></label>
+                    <label for="hauteur">Hauteur : <input type="text" value="15" id="hauteur" name="hauteur" disabled="disabled"></label>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-6">
-                    <label for="bombs">Nombre de bombes : <input type="text" value="25" id="bombs" name="bombs"></label>
+                    <label for="bombs">Nombre de bombes : <input type="text" value="10" id="bombs" name="bombs" disabled="disabled"></label>
                 </div>
                 <div class="col-xs-6">
                     <button class="btn btn-primary" id="validate">Commencer</button>

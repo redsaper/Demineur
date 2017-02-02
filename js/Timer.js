@@ -15,15 +15,19 @@ Timer.prototype.stop = function(){
 };
 
 Timer.prototype.get = function(){
-  if(!this.isReseted()) {
-    return 0;
+  var time = null;
+
+  if(this.isReseted()) {
+    time = 0;
+  }
+  else if(this.isStopped()) {
+    time = (this.timeStop - this.timeStart) / 1000;
+  }
+  else {
+    time = (Date.now() - this.timeStart) / 1000;
   }
 
-  if(!this.isStopped()) {
-      return (this.timeStop - this.timeStart) / 1000;
-    }
-
-    return (Date.now() - this.timeStart) / 1000;
+  return Math.round(time);
 };
 
 Timer.prototype.reset = function(){

@@ -8,28 +8,35 @@ document.addEventListener('contextmenu', function (event) {
 
 $(document).ready(function () {
     stopGame = false;
+    firstLeftClick = true;
     firstClick = true;
+    timer = new Timer();
+    updateTimer();
 
     $('select#niveau').change(function(){   // Selection du niveau
       console.log($('select#niveau').val());
       switch ($('select#niveau').val()) {
         case "Facile":
+          $('#menu input').prop('disabled', true);
           $('#largeur').val(15);
           $('#hauteur').val(15);
-          $('#bombs').val(25);
+          $('#bombs').val(10);
           break;
         case "Moyen":
-          $('#largeur').val(20);
-          $('#hauteur').val(20);
-          $('#bombs').val(50);
+          $('#menu input').prop('disabled', true);
+          $('#largeur').val(15);
+          $('#hauteur').val(15);
+          $('#bombs').val(20);
           break;
         case "Difficile":
-          $('#largeur').val(30);
-          $('#hauteur').val(30);
-          $('#bombs').val(130);
+          $('#menu input').prop('disabled', true);
+          $('#largeur').val(15);
+          $('#hauteur').val(15);
+          $('#bombs').val(30);
           break;
-        default:
-
+        case "Personnalisé":
+          $('#menu input').prop('disabled', false);
+          break;
       }
     });
 
@@ -62,7 +69,9 @@ function testParameters(largeur, hauteur, bombs) {
 
 function initGameboard() {
     stopGame = false;
+    firstLeftClick = true;
     firstClick = true;
+    timer.reset();
     generateLayout(largeur, hauteur);
     grid = new Grid(largeur, hauteur);
     grid.addBombs(bombs);
@@ -81,7 +90,9 @@ function initGameboard() {
             $('#modal-win').modal('hide');
 
             generateLayout(largeur, hauteur);
+            firstLeftClick = true;
             firstClick = true;
+            timer.reset();
             grid = new Grid(largeur, hauteur);
             grid.addBombs(bombs);
             $('#nbbombes').text(grid.flags + ' bombes');
@@ -135,16 +146,13 @@ function initEvents(elem) {
 
         if (event.button == 0) {
             console.log('clic du bouton gauche');
-            if (!grid.timer) {
-              timer();
-            }
 
-           if (firstClick)
+           if (firstLeftClick)
            {
              if (grid.cells[x][y].isBomb()){
                grid.moveOutBomb(x, y);
              }
-             firstClick=false;
+             firstLeftClick=false;
            }
 
             var result = grid.reveal(x, y);
@@ -164,6 +172,11 @@ function initEvents(elem) {
 
             updateView(grid.cells[x][y]);
             $('#nbbombes').text(grid.flags + ' bombes');
+        }
+
+        if (firstClick && (event.button == 0 || event.button  == 2)) {
+            firstClick = false;
+            timer.start();
         }
     });
 
@@ -195,7 +208,8 @@ function updateView(cell)
 {
     var td = $('td[data-x="' + cell.x + '"][data-y="' + cell.y + '"]').removeClass();
 
-    console.log(cell);
+
+    //console.log(cell);
 
     if (cell.isShown())
     {
@@ -229,6 +243,7 @@ function updateView(cell)
 }
 
 function gameOverLose(elem) {
+    timer.stop();
     $('#modal-lost').modal('show');
     bombCells = grid.getBombs();
     bombCells.forEach(updateView);
@@ -250,20 +265,13 @@ function gameOverWin() {
     if (i == grid.bombs) {
         $('#modal-win').modal('show');
         stopGame = true;
+        timer.stop();
         return stopGame;
     }
 }
 
-function timer(){
-  if (!grid.timer) {
-    grid.timer = true;
-  }
-  grid.second++;
-  $('#timer').text(grid.second);
+function updateTimer(){
+  $('#timer').text(timer.get());
 
-  compte=setTimeout(function() {
-    if (!stopGame) {
-      timer();
-    }
-  },1000)
+  setTimeout(updateTimer,500);
 }
