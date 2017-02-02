@@ -51,7 +51,6 @@ $(document).ready(function () {
 
 
 function testParameters(largeur, hauteur, bombs) {
-    return true;
     if (((largeur * hauteur) / 3) * 2 >= bombs) {
         if (largeur <= 40 && hauteur <= 50) {
             return true;
