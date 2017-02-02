@@ -7,6 +7,8 @@ document.addEventListener('contextmenu', function (event) {
 });
 
 $(document).ready(function () {
+    stopGame = false;
+
     $('select#niveau').change(function(){   // Selection du niveau
       console.log($('select#niveau').val());
       switch ($('select#niveau').val()) {
@@ -59,6 +61,7 @@ function testParameters(largeur, hauteur, bombs) {
 
 
 function initGameboard() {
+    stopGame = false;
     generateLayout(largeur, hauteur);
     grid = new Grid(largeur, hauteur);
     grid.addBombs(bombs);
@@ -129,51 +132,27 @@ function initEvents(elem) {
         var y = parseInt(elem.attr("data-y"));
 
         if (event.button == 0) {
-
-            if (grid.cells[x][y].flagged) {
-                console.log('Erreur, il y a un drapeau');
-            } else {
-                if (!grid.cells[x][y].isShown()) {
-                    if (grid.cells[x][y].isBomb()) {
-                        elem.addClass("bomb");
-                        gameOverLose();
-                    } else if (grid.cells[x][y].value == 0) {
-                        elem.addClass("empty");
-                        cases = grid.reveal(x, y);
-                        cases.forEach(function (el) {
-                            if (el.value == 0) {
-                                $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('empty');
-                            } else {
-                                $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('number');
-                                $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').html(el.getValue());
-                            }
-                        })
-                    } else {
-                        elem.addClass("number");
-                        elem.html(grid.cells[x][y].getValue())
-                    }
-                    grid.cells[x][y].shown = true;
-                    gameOverWin();
-                }
+            if (!grid.timer) {
+              timer();
             }
 
+            var result = grid.reveal(x, y);
+
+            result.cases.forEach(updateView);
+
+            if (result.lost) {
+                gameOverLose();
+            }
+            else {
+                gameOverWin();
+            }
         } else if (event.button == 2) {
             console.log('clic du bouton droit');
-            if (!grid.cells[x][y].isShown()) {
-                if (grid.cells[x][y].isFlagged()) {
-                    grid.cells[x][y].setFlagged(false);
-                    elem.removeClass('flag');
-                    grid.flags += 1;
-                } else if (grid.flags > 0) {
-                    grid.cells[x][y].setFlagged(true);
-                    elem.addClass('flag');
-                    grid.flags -= 1;
-                } else if (grid.flags == 0) {
-                    console.log('Nombre max de drapeau atteint !');
-                }
-                $('#nbbombes').text(grid.flags + ' bombes');
-                console.log('Nombre de bombes : ' + grid.flags);
-            }
+
+            grid.toggleFlag(x, y);
+
+            updateView(grid.cells[x][y]);
+            $('#nbbombes').text(grid.flags + ' bombes');
         }
     });
 
@@ -190,41 +169,60 @@ function initEvents(elem) {
                 result = grid.quickReveal(x, y);
                 console.log(result.cases);
 
-                result.cases.forEach(function (el) {
-                    if (el.value == 0) {
-                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('empty');
-                    }
-                    else if (el.flagged && !el.isBomb()) {
-                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').removeClass('flag');
-                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('flagError');
-                    }
-                    else if (el.isBomb()) {
-                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('bomb');
-                    }
-                    else {
-                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').addClass('number');
-                        $('td[data-x="' + el.x + '"][data-y="' + el.y + '"]').html(el.value);
-                    }
-                });
-
-
-                if (result.lost){
-                    // Perdu!
+                result.cases.forEach(updateView);
 
                 if (result.lost) {
                     gameOverLose()
                 }
             }
         }
-
-      }
     });
 
 }
 
+function updateView(cell)
+{
+    var td = $('td[data-x="' + cell.x + '"][data-y="' + cell.y + '"]').removeClass();
+    
+    console.log(cell);
+    
+    if (cell.isShown())
+    {
+        if (cell.isBomb())
+        {
+            td.addClass('bomb');
+        }
+        else {
+            if (cell.isFlagged())
+            {
+                td.addClass('flagError');
+            }
+            else
+            {
+                if (cell.getValue() === 0)
+                {
+                    td.addClass('empty');
+                }
+                else
+                {
+                    td.addClass('number');
+                    td.html(cell.getValue());
+                }
+            }
+        }
+    }
+    else if (cell.isFlagged())
+    {
+        td.addClass('flag');
+    }
+}
+
 function gameOverLose(elem) {
     $('#modal-lost').modal('show');
-    return true;
+    bombCells = grid.getBombs();
+    bombCells.forEach(updateView);
+    stopGame = true;
+    return stopGame;
 }
 
 function gameOverWin() {
@@ -239,8 +237,22 @@ function gameOverWin() {
         }
     });
     if (i == grid.bombs) {
-        console.log(i);
         $('#modal-win').modal('show');
-        return true;
+        stopGame = true;
+        return stopGame;
     }
+}
+
+function timer(){
+  if (!grid.timer) {
+    grid.timer = true;
+  }
+  grid.second++;
+  $('#timer').text(grid.second);
+
+  compte=setTimeout(function() {
+    if (!stopGame) {
+      timer();
+    }
+  },1000)
 }
