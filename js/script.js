@@ -14,19 +14,25 @@ $(document).ready(function () {
       console.log($('select#niveau').val());
       switch ($('select#niveau').val()) {
         case "Facile":
+          $('#menu input').prop('disabled', true);
           $('#largeur').val(15);
           $('#hauteur').val(15);
-          $('#bombs').val(25);
+          $('#bombs').val(10);
           break;
         case "Moyen":
-          $('#largeur').val(20);
-          $('#hauteur').val(20);
-          $('#bombs').val(50);
+          $('#menu input').prop('disabled', true);
+          $('#largeur').val(15);
+          $('#hauteur').val(15);
+          $('#bombs').val(20);
           break;
         case "Difficile":
-          $('#largeur').val(30);
-          $('#hauteur').val(30);
-          $('#bombs').val(130);
+          $('#menu input').prop('disabled', true);
+          $('#largeur').val(15);
+          $('#hauteur').val(15);
+          $('#bombs').val(30);
+          break;
+        case "Personnalisé":
+          $('#menu input').prop('disabled', false);
           break;
       }
     });
@@ -194,7 +200,7 @@ function updateView(cell)
     var td = $('td[data-x="' + cell.x + '"][data-y="' + cell.y + '"]').removeClass();
 
 
-    console.log(cell);
+    //console.log(cell);
 
     if (cell.isShown())
     {
@@ -253,19 +259,6 @@ function gameOverWin() {
         stopGame = true;
         return stopGame;
     }
-}
-
-function score(timer){
-  var score = 0;
-  $('td').each(function(){
-    if ($(this).hasClass('empty') || $(this).hasClass('number')){
-      score++;
-    }
-  });
-  score = score/timer*(grid.bombs/(grid.width*grid.height))*100;
-  score = Math.round(score)
-  console.log(score);
-  return score;
 }
 
 function timer(){
