@@ -18,21 +18,21 @@ $(document).ready(function () {
       switch ($('select#niveau').val()) {
         case "Facile":
           $('#menu input').prop('disabled', true);
-          $('#largeur').val(15);
-          $('#hauteur').val(15);
+          $('#largeur').val(10);
+          $('#hauteur').val(10);
           $('#bombs').val(10);
           break;
         case "Moyen":
           $('#menu input').prop('disabled', true);
-          $('#largeur').val(15);
+          $('#largeur').val(20);
           $('#hauteur').val(15);
-          $('#bombs').val(20);
+          $('#bombs').val(45);
           break;
         case "Difficile":
           $('#menu input').prop('disabled', true);
-          $('#largeur').val(15);
-          $('#hauteur').val(15);
-          $('#bombs').val(30);
+          $('#largeur').val(35);
+          $('#hauteur').val(20);
+          $('#bombs').val(170);
           break;
         case "Personnalisé":
           $('#menu input').prop('disabled', false);
