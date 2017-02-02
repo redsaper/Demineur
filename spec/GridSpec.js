@@ -27,10 +27,36 @@ describe("Grid", function() {
   it("Ajout bombe", function() {
 
     grille.addBomb(1,1);
+
     expect((grille.cells[0][0]).value).toEqual(1);
     expect((grille.cells[0][1]).value).toEqual(1);
     expect((grille.cells[1][0]).value).toEqual(1);
     expect((grille.cells[1][1]).isBomb()).toBe(true);
+  });
+
+  it("test getNbBombsAround", function() {
+
+    grille.addBomb(1,1);
+
+    expect(grille.getNbBombsAround(0,0)).toEqual(1);
+    expect(grille.getNbBombsAround(0,1)).toEqual(1);
+    expect(grille.getNbBombsAround(1,0)).toEqual(1);
+    expect(grille.getNbBombsAround(1,1)).toEqual(0);
+  });
+
+  it("test moveOutBomb", function() {
+
+    grille.addBomb(0,1);
+    grille.addBomb(1,0);
+    grille.addBomb(1,1);
+
+    grille.moveOutBomb(1,1);
+
+    expect((grille.cells[0][0]).isBomb()).toBe(true);
+    expect((grille.cells[0][1]).isBomb()).toBe(true);
+    expect((grille.cells[1][0]).isBomb()).toBe(true);
+    expect((grille.cells[1][1]).isBomb()).toBe(false);
+    expect((grille.cells[1][1]).getValue()).toEqual(3);
   });
 });
 
