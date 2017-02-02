@@ -14,7 +14,7 @@ function Grid(width, height)
   for (var x = 0; x < width; x++)
   {
     this.cells[x] = [];
-    for (var y = 0; y < width; y++)
+    for (var y = 0; y < height; y++)
     {
       this.cells[x][y] = new Case(0,x,y);
     }
@@ -68,15 +68,6 @@ Grid.prototype.addBombs = function (nbBombs)
 
     this.addBomb(x, y);
   }
-};
-
-Grid.prototype.removeCases = function () {
-  for (var x = 0; x < width; x++) {
-    for (var y = 0; y < width; y++) {
-      this.cells[x][y] = null;
-    }
-  }
-
 };
 
 Grid.prototype.reveal = function (x,y)

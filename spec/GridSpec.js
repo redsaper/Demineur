@@ -6,6 +6,15 @@ describe("Grid", function() {
     grille = new Grid(2,2);
   });
 
+  it("Grid constructor", function() {
+    expect(grille.width).toEqual(2);
+    expect(grille.height).toEqual(2);
+    expect(grille.bombs).toEqual(0);
+    expect(grille.flags).toEqual(0);
+    expect(grille.timer).toBe(false);
+    expect(grille.second).toEqual(0);
+  });
+
   it("should not be empty", function() {
 
     expect(Grid).toBeDefined();
@@ -34,6 +43,24 @@ describe("Grid", function() {
     expect((grille.cells[1][1]).isBomb()).toBe(true);
   });
 
+  it("Ajout bombes", function() {
+
+    grille.addBombs(2);
+    expect(grille.bombs).toEqual(2);
+  });
+
+  it("test reveal", function() {
+    grille.reveal(0, 0);
+    expect(grille.cells[0][0].shown).toBe(true);
+  });
+
+  it("test getNbFlagsAround", function() {
+    grille.cells[0][0].flagged = true;
+    grille.cells[0][1].flagged = true;
+    expect(grille.getNbFlagsAround(1,0)).toEqual(2);
+  });
+
+
   it("test getNbBombsAround", function() {
 
     grille.addBomb(1,1);
@@ -57,6 +84,11 @@ describe("Grid", function() {
     expect((grille.cells[1][0]).isBomb()).toBe(true);
     expect((grille.cells[1][1]).isBomb()).toBe(false);
     expect((grille.cells[1][1]).getValue()).toEqual(3);
+  });
+
+  it("Test isValidCoordinate", function() {
+
+    expect(grille.isValidCoordinate(9, 9)).toBe(false);
   });
 });
 
