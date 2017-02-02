@@ -8,6 +8,7 @@ document.addEventListener('contextmenu', function (event) {
 
 $(document).ready(function () {
     stopGame = false;
+    firstClick = true;
 
     $('select#niveau').change(function(){   // Selection du niveau
       console.log($('select#niveau').val());
@@ -50,7 +51,7 @@ $(document).ready(function () {
 
 
 function testParameters(largeur, hauteur, bombs) {
-
+    return true;
     if (((largeur * hauteur) / 3) * 2 >= bombs) {
         if (largeur <= 40 && hauteur <= 50) {
             return true;
@@ -62,6 +63,7 @@ function testParameters(largeur, hauteur, bombs) {
 
 function initGameboard() {
     stopGame = false;
+    firstClick = true;
     generateLayout(largeur, hauteur);
     grid = new Grid(largeur, hauteur);
     grid.addBombs(bombs);
@@ -80,6 +82,7 @@ function initGameboard() {
             $('#modal-win').modal('hide');
 
             generateLayout(largeur, hauteur);
+            firstClick = true;
             grid = new Grid(largeur, hauteur);
             grid.addBombs(bombs);
             $('#nbbombes').text(grid.flags + ' bombes');
@@ -132,9 +135,18 @@ function initEvents(elem) {
         var y = parseInt(elem.attr("data-y"));
 
         if (event.button == 0) {
+            console.log('clic du bouton gauche');
             if (!grid.timer) {
               timer();
             }
+
+           if (firstClick)
+           {
+             if (grid.cells[x][y].isBomb()){
+               grid.moveOutBomb(x, y);
+             }
+             firstClick=false;
+           }
 
             var result = grid.reveal(x, y);
 
@@ -183,9 +195,9 @@ function initEvents(elem) {
 function updateView(cell)
 {
     var td = $('td[data-x="' + cell.x + '"][data-y="' + cell.y + '"]').removeClass();
-    
+
     console.log(cell);
-    
+
     if (cell.isShown())
     {
         if (cell.isBomb())
