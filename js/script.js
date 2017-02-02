@@ -27,8 +27,6 @@ $(document).ready(function () {
           $('#hauteur').val(30);
           $('#bombs').val(130);
           break;
-        default:
-
       }
     });
 
@@ -183,9 +181,9 @@ function initEvents(elem) {
 function updateView(cell)
 {
     var td = $('td[data-x="' + cell.x + '"][data-y="' + cell.y + '"]').removeClass();
-    
-    console.log(cell);
-    
+
+    //console.log(cell);
+
     if (cell.isShown())
     {
         if (cell.isBomb())
@@ -218,6 +216,7 @@ function updateView(cell)
 }
 
 function gameOverLose(elem) {
+    score(grid.second);
     $('#modal-lost').modal('show');
     bombCells = grid.getBombs();
     bombCells.forEach(updateView);
@@ -237,10 +236,24 @@ function gameOverWin() {
         }
     });
     if (i == grid.bombs) {
+        score(grid.second);
         $('#modal-win').modal('show');
         stopGame = true;
         return stopGame;
     }
+}
+
+function score(timer){
+  var score = 0;
+  $('td').each(function(){
+    if ($(this).hasClass('empty') || $(this).hasClass('number')){
+      score++;
+    }
+  });
+  score = score/timer*(grid.bombs/(grid.width*grid.height))*100;
+  score = Math.round(score)
+  console.log(score);
+  return score;
 }
 
 function timer(){
