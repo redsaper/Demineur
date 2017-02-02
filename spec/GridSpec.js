@@ -1,6 +1,10 @@
 describe("Grid", function() {
 
-  var grille = new Grid(2,2);
+  var grille = null;
+
+  beforeEach(function() {
+    grille = new Grid(2,2);
+  });
 
   it("should not be empty", function() {
 
@@ -9,7 +13,7 @@ describe("Grid", function() {
 
   it("Nombre drapeaux = nombre bombes", function() {
 
-    expect(grille.flags - grille.bombs).toEqual(0);
+    expect(grille.flags).toEqual(grille.bombs);
   });
 
   it("No bomb", function() {
