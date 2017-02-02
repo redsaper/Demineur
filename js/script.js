@@ -234,7 +234,6 @@ function updateView(cell)
 }
 
 function gameOverLose(elem) {
-    score(grid.second);
     $('#modal-lost').modal('show');
     bombCells = grid.getBombs();
     bombCells.forEach(updateView);
@@ -254,7 +253,6 @@ function gameOverWin() {
         }
     });
     if (i == grid.bombs) {
-        score(grid.second);
         $('#modal-win').modal('show');
         stopGame = true;
         return stopGame;
