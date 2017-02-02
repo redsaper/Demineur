@@ -183,9 +183,9 @@ function initEvents(elem) {
 function updateView(cell)
 {
     var td = $('td[data-x="' + cell.x + '"][data-y="' + cell.y + '"]').removeClass();
-    
+
     console.log(cell);
-    
+
     if (cell.isShown())
     {
         if (cell.isBomb())
