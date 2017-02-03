@@ -169,4 +169,13 @@ describe("Timer", function() {
     expect(timer.get()).toEqual(0);
   });
 
+  it("test start", function() {
+
+    timer.timeStart = 41;
+    timer.timeStop = 83;
+    expect(timer.isMultipleOf30()).toBe(false);
+    timer.timeStop = 101;
+    expect(timer.isMultipleOf30()).toBe(true);
+  });
+
 });

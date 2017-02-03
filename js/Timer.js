@@ -46,3 +46,7 @@ Timer.prototype.isStopped = function(){
 Timer.prototype.isReseted = function(){
   return this.timeStart == null && this.timeStop == null;
 };
+
+Timer.prototype.isMultipleOf30 = function(){
+  return ((this.timeStop-this.timeStart)%30 == 0); 
+}
