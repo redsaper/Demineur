@@ -145,6 +145,18 @@ describe("Timer", function() {
     expect(timer.isStarted()).toBe(true);
   });
 
+    it("test start", function() {
+
+    timer.start();
+    var date_dot_now= Date.now;
+ 
+    Date.prototype.now = function () {
+        console.log("lkjh");
+        return date_dot_now()+100000;
+    };
+    expect(timer.get()).toEqual(date_dot_now()+1000);
+  });
+
   it("test stop", function() {
 
     expect(timer.isStopped()).toBe(false);
