@@ -24,6 +24,7 @@ Timer.prototype.get = function(){
     time = (this.timeStop - this.timeStart) / 1000;
   }
   else {
+    console.log("get");
     time = (Date.now() - this.timeStart) / 1000;
   }
 

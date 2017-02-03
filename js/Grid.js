@@ -50,6 +50,36 @@ Grid.prototype.addBomb = function (x, y)
   }
 };
 
+Grid.prototype.removeBomb = function (x, y)
+{
+  var nbBombsAround = 0;
+
+  for (var i = -1 ; i <= 1 ; i++)
+  {
+    for (var j = -1 ; j <= 1 ; j++)
+    {
+      var x2 = x + i;
+      var y2 = y + j;
+
+      if (!this.isValidCoordinate(x2, y2) || (x2 === x && y2 === y))
+      {
+        continue;
+      }
+
+      if (this.cells[x2][y2].isBomb())
+      {
+        nbBombsAround++;
+      }
+      else
+      {
+        this.cells[x2][y2].value--;
+      }
+    }
+  }
+  
+  this.cells[x][y].value = nbBombsAround;
+};
+
 Grid.prototype.addBombs = function (nbBombs)
 {
   this.bombs += nbBombs;
@@ -130,31 +160,6 @@ Grid.prototype.getNbFlagsAround = function (x, y)
   return nbFlagsAround;
 };
 
-Grid.prototype.getNbBombsAround = function (x, y)
-{
-  var nbBombsAround = 0;
-
-  for (var i = -1 ; i <= 1 ; i++)
-  {
-    for (var j = -1 ; j <= 1 ; j++)
-    {
-      var x2 = x + i;
-      var y2 = y + j;
-
-      if (!this.isValidCoordinate(x2, y2) || (x2 === x && y2 === y))
-      {
-        continue;
-      }
-
-      if (this.cells[x2][y2].isBomb())
-      {
-        nbBombsAround++;
-      }
-    }
-  }
-
-  return nbBombsAround;
-};
 
 Grid.prototype.quickReveal = function (x, y)
 {
@@ -222,8 +227,8 @@ Grid.prototype.getBombs = function ()
 Grid.prototype.moveOutBomb = function (x, y)
 {
   this.addBombs(1);
+  this.removeBomb(x, y);
 
-  this.cells[x][y].value = this.getNbBombsAround(x, y);
   this.bombs--;
   this.flags--;
 }
