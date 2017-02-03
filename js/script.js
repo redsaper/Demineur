@@ -18,18 +18,21 @@ $(document).ready(function () {
       switch ($('select#niveau').val()) {
         case "Facile":
           $('#menu :text').prop('disabled', true);
+          $('#timeout').val('');
           $('#largeur').val(10);
           $('#hauteur').val(10);
           $('#bombs').val(10);
           break;
         case "Moyen":
           $('#menu :text').prop('disabled', true);
+          $('#timeout').val('');
           $('#largeur').val(20);
           $('#hauteur').val(15);
           $('#bombs').val(45);
           break;
         case "Difficile":
           $('#menu :text').prop('disabled', true);
+          $('#timeout').val('');
           $('#largeur').val(35);
           $('#hauteur').val(20);
           $('#bombs').val(170);
@@ -109,6 +112,7 @@ function initGameboard() {
     $('.menu-back').each(function () {
         $(this).click(function () {
             stopGame = false;
+            timer.reset();
             $('#modal-lost').modal('hide');
             $('#modal-win').modal('hide');
 
@@ -276,8 +280,17 @@ function gameOverWin() {
     }
 }
 
+function timeOut(t){
+  var timeout = $('#timeout').val();
+  if (t >= timeout && timeout > 0) {
+    gameOverLose();
+  }
+}
+
 function updateTimer(){
   $('#timer').text(timer.get());
-
+  if (timer.isStarted()) {
+    timeOut(timer.get());
+  }
   setTimeout(updateTimer,500);
 }

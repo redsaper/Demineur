@@ -8,7 +8,7 @@ Timer.prototype.start = function(){
 };
 
 Timer.prototype.stop = function(){
-  if(!this.isStarted()){
+  if(!this.isStarted() || this.isStopped()){
     return;
   }
   this.timeStop = Date.now();
@@ -24,7 +24,7 @@ Timer.prototype.get = function(){
     time = (this.timeStop - this.timeStart) / 1000;
   }
   else {
-    console.log("get");
+    //console.log("get");
     time = (Date.now() - this.timeStart) / 1000;
   }
 
@@ -49,5 +49,5 @@ Timer.prototype.isReseted = function(){
 };
 
 Timer.prototype.isMultipleOf = function(x){
-  return ((this.timeStop-this.timeStart)%x == 0); 
+  return ((this.timeStop-this.timeStart)%x == 0);
 }
