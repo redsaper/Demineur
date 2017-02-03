@@ -239,6 +239,8 @@ function updateView(cell)
     else if (cell.isFlagged())
     {
         td.addClass('flag');
+    } else if (stopGame && cell.isBomb()){
+        td.addClass('bomb');
     }
 }
 
@@ -246,8 +248,8 @@ function gameOverLose(elem) {
     timer.stop();
     $('#modal-lost').modal('show');
     bombCells = grid.getBombs();
-    bombCells.forEach(updateView);
     stopGame = true;
+    bombCells.forEach(updateView);
     return stopGame;
 }
 
