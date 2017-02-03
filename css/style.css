@@ -4,19 +4,37 @@
     src: url("../fonts/Digits.ttf");
 }
 
+html, body {
+    height: 100%;
+}
+
 
 .vertical-center {
-    min-height: 90%;  /* Fallback for browsers do NOT support vh unit */
-    min-height: 90vh; /* These two lines are counted as one :-)       */
+    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh; /* These two lines are counted as one :-)       */
 
     display: flex;
     align-items: center;
+}
+
+
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
 }
 
 .container h1 {
     font-size: 35px;
     font-weight: bold;
     text-align: center;
+    margin-top: 0;
 }
 
 .container h2 {
@@ -117,10 +135,10 @@ td.number {
 #menu {
     width: 400px;
     margin: 0 auto;
+    margin-top: 20px;
 }
 
 #menu button {
-    margin-left: 30px;
     margin-top: 10px;
 }
 
@@ -270,4 +288,14 @@ button#validate:hover {
     box-shadow: 0px 0px 5px 0px #ffffff;
     filter:progid:DXImageTransform.Microsoft.Shadow(color=#ffffff, Direction=NaN, Strength=5);
     font-weight: bold;
+}
+
+#gameboard div.hud {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+
+#gameboard div.hud div:nth-child(1) {
+    text-align: right;
 }

@@ -20,47 +20,62 @@
         <h1>Démineur</h1>
 
         <div id="menu">
-            <div class="row">
-                <div class="col-xs-12">
+            <div class="row row-centered">
+                <div class="col-12 col-centered">
                     <label for="niveau">Niveau : </label>
                     <select name="niveau" id="niveau">
-                      <option>Facile
-                      <option>Moyen
-                      <option>Difficile
-                      <option>Personnalisé
+                        <option>Facile
+                        <option>Moyen
+                        <option>Difficile
+                        <option>Personnalisé
                     </select>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-xs-6">
-                    <label for="largeur">Largeur : <input type="text" value="10" id="largeur" name="largeur" disabled="disabled"></label>
+                    <label for="largeur">Largeur : <input type="text" value="10" id="largeur" name="largeur"
+                                                          disabled="disabled"></label>
                 </div>
                 <div class="col-xs-6">
-                    <label for="hauteur">Hauteur : <input type="text" value="10" id="hauteur" name="hauteur" disabled="disabled"></label>
+                    <label for="hauteur">Hauteur : <input type="text" value="10" id="hauteur" name="hauteur"
+                                                          disabled="disabled"></label>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-6">
-                    <label for="bombs">Nombre de bombes : <input type="text" value="10" id="bombs" name="bombs" disabled="disabled"></label>
+                    <label for="bombs">Nombre de bombes : <input type="text" value="10" id="bombs" name="bombs"
+                                                                 disabled="disabled"></label>
                 </div>
                 <div class="col-xs-6">
-                    <label for="expire-timer">Timer : <input type="text" value="" id="expire-timer" name="expire-timer" disabled="disabled"></label>
+                    <label for="expire-timer">Timer : <input type="text" value="" id="expire-timer" name="expire-timer"
+                                                             disabled="disabled"></label>
                 </div>
             </div>
-            <div class="row">
-              <div class="col-xs-12">
-                  <label>
-                  <input type="checkbox" id="cbox1" value="checkbox1">
-                  Ajouter une bombe toutes les 30 secondes
-                  </label>
-              </div>
-              <div class="col-xs-6">
-                  <button class="btn btn-primary" id="validate">Commencer</button>
-              </div>
+            <div class="row row-centered">
+                <div class="col-12 col-centered">
+                    <label>
+                        <input type="checkbox" id="cbox1" value="checkbox1">
+                        Ajouter une bombe toutes les 30 secondes
+                    </label>
+                </div>
+            </div>
+            <div class="row row-centered">
+                <div class="col-12 col-centered">
+                    <button class="btn btn-primary" id="validate">Commencer</button>
+                </div>
             </div>
         </div>
 
         <div id="gameboard" style="display: none;">
-          <h2><img src="img/soldier-black.png" height="30px"> <span id="nbbombes"></span></h2>
-          <h2><img src="img/timer.png" height="30px"> <span id="timer">0</span> secondes</h2>
+            <div class="row row-centered hud">
+                <div class="col-xs-6 col-centered">
+                    <img src="img/soldier-black.png" height="30px"> <span id="nbbombes"></span>
+                </div>
+                <div class="col-xs-6 col-centered">
+                    <img src="img/timer.png" height="30px"> <span id="timer">0</span> secondes
+                </div>
+            </div>
+
 
             <table>
                 <tbody>
@@ -79,7 +94,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Vous avez perdu!</h4>
             </div>
             <div class="modal-body">
@@ -97,7 +113,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Vous avez gagné!</h4>
             </div>
             <div class="modal-body">
