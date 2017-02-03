@@ -8,9 +8,6 @@ function Grid(width, height)
 
   this.cells = [];
 
-  this.timer = false;
-  this.second = 0;
-
   for (var x = 0; x < width; x++)
   {
     this.cells[x] = [];
@@ -29,6 +26,8 @@ Grid.prototype.isValidCoordinate = function (x, y)
 Grid.prototype.addBomb = function (x, y)
 {
   this.cells[x][y].value = 'B';
+  this.bombs++;
+  this.flags++;
 
   for (var i = -1 ; i <= 1 ; i++)
   {
@@ -76,15 +75,12 @@ Grid.prototype.removeBomb = function (x, y)
       }
     }
   }
-  
+
   this.cells[x][y].value = nbBombsAround;
 };
 
 Grid.prototype.addBombs = function (nbBombs)
 {
-  this.bombs += nbBombs;
-  this.flags += nbBombs;
-
   for (var i = 0; i < nbBombs; i++)
   {
     var x = Math.floor((Math.random() * this.width));
@@ -245,7 +241,7 @@ Grid.prototype.toggleFlag = function (x, y)
   if (cell.isFlagged())
   {
     cell.setFlagged(false);
-    grid.flags++;
+    this.flags++;
   }
   else
   {
@@ -255,12 +251,6 @@ Grid.prototype.toggleFlag = function (x, y)
     }
 
     cell.setFlagged(true);
-    grid.flags--;
+    this.flags--;
   }
 }
-
-Grid.prototype.addHiddenRandomBomb = function ()
-{
-  this.bombs++;
-  this.flags++;
-};
