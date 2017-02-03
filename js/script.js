@@ -92,6 +92,7 @@ function initGameboard() {
             generateLayout(largeur, hauteur);
             firstLeftClick = true;
             firstClick = true;
+            stopGame = false;
             timer.reset();
             grid = new Grid(largeur, hauteur);
             grid.addBombs(bombs);
@@ -107,6 +108,7 @@ function initGameboard() {
 
     $('.menu-back').each(function () {
         $(this).click(function () {
+            stopGame = false;
             $('#modal-lost').modal('hide');
             $('#modal-win').modal('hide');
 
