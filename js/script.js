@@ -199,6 +199,8 @@ function initEvents(elem) {
 
                 if (result.lost) {
                     gameOverLose()
+                }else {
+                    gameOverWin();
                 }
             }
         }
