@@ -258,3 +258,9 @@ Grid.prototype.toggleFlag = function (x, y)
     grid.flags--;
   }
 }
+
+Grid.prototype.addHiddenRandomBomb = function ()
+{
+  this.bombs++;
+  this.flags++;
+};
