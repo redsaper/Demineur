@@ -17,19 +17,19 @@ $(document).ready(function () {
       console.log($('select#niveau').val());
       switch ($('select#niveau').val()) {
         case "Facile":
-          $('#menu input').prop('disabled', true);
+          $('#menu :text').prop('disabled', true);
           $('#largeur').val(10);
           $('#hauteur').val(10);
           $('#bombs').val(10);
           break;
         case "Moyen":
-          $('#menu input').prop('disabled', true);
+          $('#menu :text').prop('disabled', true);
           $('#largeur').val(20);
           $('#hauteur').val(15);
           $('#bombs').val(45);
           break;
         case "Difficile":
-          $('#menu input').prop('disabled', true);
+          $('#menu :text').prop('disabled', true);
           $('#largeur').val(35);
           $('#hauteur').val(20);
           $('#bombs').val(170);
@@ -92,6 +92,7 @@ function initGameboard() {
             generateLayout(largeur, hauteur);
             firstLeftClick = true;
             firstClick = true;
+            stopGame = false;
             timer.reset();
             grid = new Grid(largeur, hauteur);
             grid.addBombs(bombs);
@@ -107,6 +108,7 @@ function initGameboard() {
 
     $('.menu-back').each(function () {
         $(this).click(function () {
+            stopGame = false;
             $('#modal-lost').modal('hide');
             $('#modal-win').modal('hide');
 

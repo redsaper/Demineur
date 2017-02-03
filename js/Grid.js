@@ -212,8 +212,8 @@ Grid.prototype.getBombs = function ()
 {
   var bombList = [];
 
-  for (var x = 0; x < this.height; x++){
-    for (var y = 0; y < this.width; y++){
+  for (var x = 0; x < this.width; x++){
+    for (var y = 0; y < this.height; y++){
       if (this.cells[x][y].isBomb()){
         bombList.push(this.cells[x][y]);
       }
